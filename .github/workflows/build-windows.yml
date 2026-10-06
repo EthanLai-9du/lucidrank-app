@@ -1,0 +1,57 @@
+name: Build Windows installer
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-windows-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri -> target
+
+      - name: Install JS deps (Tauri CLI only)
+        run: npm ci
+
+      - name: Build NSIS + MSI and publish prerelease v0.1.0
+        uses: tauri-apps/tauri-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: v0.1.0
+          releaseName: LucidRank v0.1.0 (prototype)
+          releaseBody: |
+            LucidRank Windows 桌面原型 v0.1.0（未签名）。
+            下载 `LucidRank_0.1.0_x64-setup.exe` 安装即可。SmartScreen 提示时点「更多信息」→「仍要运行」。
+            安全：只检查进程列表里游戏是否在运行；不读写游戏内存、不注入、不做覆盖层、不截屏、不模拟输入。
+          releaseDraft: false
+          prerelease: true
+          args: --bundles nsis,msi
+
+      - name: Upload installers as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: LucidRank-windows-installers
+          path: |
+            src-tauri/target/release/bundle/nsis/*.exe
+            src-tauri/target/release/bundle/msi/*.msi
+          if-no-files-found: error
