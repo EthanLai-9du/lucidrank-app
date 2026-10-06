@@ -214,7 +214,7 @@ async function act(a){
   if(a==='lock'){ const w=S.weekly(D()); const g=Object.assign({},w.proposals[proposalIdx]||w.proposals[0],{setOn:dayKey()}); await store.update(d=>{ d.goals[w.ws]=g; }); return render(); }
   if(a==='swap'){ proposalIdx++; return render(); }
   if(a==='export'){ const p=await invoke('export_data'); if(p) toast(t('s.exported',{p})); return; }
-  if(a==='wipe'){ if(!confirm(t('s.deleteQ').replace(/&[a-z#0-9]+;/g,''))) return; await invoke('delete_all_data'); await store.load(); toast(t('s.deleted')); return render(); }
+  if(a==='wipe'){ if(!await LR.confirm(t('s.deleteQ'),t('s.delete'),true)) return; await invoke('delete_all_data'); await store.load(); toast(t('s.deleted')); return render(); }
 }
 document.addEventListener('click',async e=>{
   const b=e.target.closest('[data-act]'); if(b){ e.preventDefault(); act(b.dataset.act); return; }

@@ -67,6 +67,10 @@ def run(lang, full):
             p.screenshot(path=str(OUT / f"{lang}-12-matches.png"))
             p.click("[data-view=settings]"); p.wait_for_timeout(400)
             p.screenshot(path=str(OUT / f"{lang}-13-settings.png"))
+            p.click("[data-act=wipe]"); p.wait_for_timeout(300)
+            p.screenshot(path=str(OUT / f"{lang}-13b-delete-confirm.png"))
+            p.click(".modal [data-r='0']"); p.wait_for_timeout(200)
+            assert p.evaluate("LR.store.data.matches.length") > 0, "cancel must keep data"
         # lineups
         l = page_for(ctx, lang)
         l.set_viewport_size({"width": 1120, "height": 760})
