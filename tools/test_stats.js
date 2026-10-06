@@ -3,7 +3,7 @@ const fs=require('fs'), vm=require('vm'), path=require('path');
 const S=p=>fs.readFileSync(path.join(__dirname,'../src/js',p),'utf8');
 const store={};
 const ctx={console,navigator:{language:'en-US'},localStorage:{getItem:k=>store[k]??null,setItem:(k,v)=>store[k]=v,removeItem:k=>delete store[k]},
-  document:{documentElement:{dataset:{}},querySelectorAll:()=>[]},window:{},URLSearchParams,setTimeout,Date,Math,JSON};
+  document:{documentElement:{dataset:{},classList:{add(){},remove(){},toggle(){}}},querySelectorAll:()=>[],addEventListener(){}},addEventListener(){},window:{},URLSearchParams,setTimeout,Date,Math,JSON};
 ctx.window=ctx; vm.createContext(ctx);
 vm.runInContext(S('i18n.js').replace('const I18N','var I18N'),ctx);
 vm.runInContext(S('core.js'),ctx); vm.runInContext(S('stats.js'),ctx);

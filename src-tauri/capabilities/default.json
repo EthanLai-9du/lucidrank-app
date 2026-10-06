@@ -1,7 +1,15 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
-  "description": "Local-only app windows. Only core events/window basics; all app logic goes through our own commands.",
-  "windows": ["main", "checkin", "lineups"],
-  "permissions": ["core:default"]
+  "description": "Local-only app windows. Core events + dragging the custom title bar; everything else goes through our own commands.",
+  "windows": [
+    "main",
+    "checkin",
+    "lineups"
+  ],
+  "permissions": [
+    "core:default",
+    "core:window:allow-start-dragging",
+    "core:window:allow-internal-toggle-maximize"
+  ]
 }

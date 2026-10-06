@@ -1,6 +1,6 @@
 [package]
 name = "lucidrank"
-version = "0.1.0"
+version = "0.1.1"
 description = "LucidRank: daily check-in + match log for VALORANT / CS2 players"
 authors = ["EthanLai-9du"]
 edition = "2021"

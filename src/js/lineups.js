@@ -5,6 +5,14 @@
 const {$,$$,esc,t,raw,applyI18n,onLang,invoke,listen,store,gamePill,gameName}=LR;
 const {MAPS,AGENTS,UTIL,ABIL,UTIL_NAME,LINEUPS}=LRLineups;
 const tx=o=>o?(o[LR.lang]||o.sc||o.en):'';
+function boot(H,opts={}){
+const close=opts.close||(()=>invoke('close_self'));
+let alive=true;
+const end=()=>{ if(!alive) return; alive=false; removeEventListener('keydown',onKey); close(); };
+if(opts.inline){
+  H.innerHTML=`<div class="lu-inline"><header class="lu-head inline"><button class="btn ghost sm" data-back>${t('fb.back')}</button><h1>${t('lu.h')}</h1><span class="tag-demo">${t('lu.example')}</span><span class="grow"></span><span class="muted sm num" id="luProg"></span><div class="game-pill" id="gamePill"></div></header>
+  <div class="lu-grid"><aside class="lu-filters" id="luFilters"></aside><section class="lu-list" id="luList"></section><section class="lu-detail" id="luDetail"></section></div></div>`;
+}
 let st={game:'val',map:'Ascent',agent:'any',util:'any',side:'any',scn:'any',favOnly:false,sel:null,maps:{}};
 let running=null;
 const SCN=['exec','post','retake','hold'];
@@ -21,7 +29,7 @@ const chip=(attr,val,label,on)=>`<button class="chip" data-${attr}="${esc(val)}"
 function title(x){ return `${esc(tx(ABIL[x.ab]))} <span class="arrow">→</span> ${esc(tx(x.to))}`; }
 
 function renderFilters(){
-  const el=$('#luFilters'), maps=Object.keys(MAPS[st.game]);
+  const el=$('#luFilters',H), maps=Object.keys(MAPS[st.game]);
   el.innerHTML=`
     <div class="seg full">${['val','cs2'].map(g=>`<button data-game="${g}" aria-pressed="${st.game===g}">${gameName(g)}</button>`).join('')}</div>
     <div class="fblock"><label class="lbl">${t('lu.map')}</label><div class="chips">${maps.map(m=>chip('map',m,m,st.map===m)).join('')}</div>
@@ -34,7 +42,7 @@ function renderFilters(){
     <label class="chk"><input type="checkbox" id="favOnly"${st.favOnly?' checked':''}><i></i>${t('lu.favOnly')}</label>`;
 }
 function renderList(){
-  const el=$('#luList'), list=filtered();
+  const el=$('#luList',H), list=filtered();
   if(!list.find(x=>x.id===st.sel)) st.sel=list[0]?list[0].id:null;
   el.innerHTML=`<div class="lu-count muted xs">${st.map} · ${t('lu.count',{n:list.length})}</div>`+(list.length?list.map(x=>`
     <button class="lcard${x.id===st.sel?' on':''}" data-sel="${x.id}">
@@ -43,7 +51,7 @@ function renderList(){
       <span class="lflags">${isFav(x.id)?'<b class="fav">★</b>':''}${isLearned(x.id)?'<b class="lrn">✓</b>':''}</span>
     </button>`).join(''):`<p class="muted sm pad">${t('lu.none')}</p>`);
   const all=LINEUPS.filter(x=>x.game===st.game);
-  $('#luProg').textContent=t('lu.progress',{x:all.filter(x=>isLearned(x.id)).length,n:all.length});
+  $('#luProg',H).textContent=t('lu.progress',{x:all.filter(x=>isLearned(x.id)).length,n:all.length});
 }
 function minimap(x){
   const M=MAPS[x.game][x.map];
@@ -62,7 +70,7 @@ function minimap(x){
   return `<svg class="mm" viewBox="-2 -2 104 104" role="img" aria-label="${esc(x.map)}">${g}</svg>`;
 }
 function renderDetail(){
-  const el=$('#luDetail'), x=LINEUPS.find(y=>y.id===st.sel);
+  const el=$('#luDetail',H), x=LINEUPS.find(y=>y.id===st.sel);
   if(!x){ el.innerHTML=`<div class="lu-empty muted">${t('lu.none')}</div>`; return; }
   el.innerHTML=`
     <div class="ld-head"><div><h2>${title(x)}</h2><p class="muted sm">${esc(x.map)} · ${esc(x.agent||tx(UTIL_NAME[x.util]))} · ${t('lu.'+x.side)} · ${t('lu.s.'+x.scn)}</p></div>
@@ -77,8 +85,9 @@ function render(){ renderFilters(); renderList(); renderDetail(); }
 let saveT=0;
 function remember(){ clearTimeout(saveT); saveT=setTimeout(()=>store.update(d=>{ d.lineups.last=Object.assign({},st); }),400); }
 
-document.addEventListener('click',async e=>{
+H.addEventListener('click',async e=>{
   const b=e.target.closest('button'); if(!b) return;
+  if(b.dataset.back!==undefined){ end(); return; }
   const d=b.dataset;
   if(d.game){ st.game=d.game; st.map=st.maps[st.game]||Object.keys(MAPS[st.game])[0]; st.sel=null; }
   else if(d.map){ st.map=d.map; st.maps[st.game]=d.map; st.sel=null; }
@@ -91,12 +100,14 @@ document.addEventListener('click',async e=>{
   else return;
   render(); remember();
 });
-document.addEventListener('change',e=>{ if(e.target.id==='favOnly'){ st.favOnly=e.target.checked; render(); remember(); } });
-addEventListener('keydown',e=>{
-  if(e.key==='Escape') invoke('close_self');
+H.addEventListener('change',e=>{ if(e.target.id==='favOnly'){ st.favOnly=e.target.checked; render(); remember(); } });
+function onKey(e){
+  if(!H.isConnected){ removeEventListener('keydown',onKey); return; }
+  if(e.key==='Escape'){ end(); return; }
   if(e.key==='ArrowDown'||e.key==='ArrowUp'){ const l=filtered(), i=l.findIndex(x=>x.id===st.sel); const n=l[Math.max(0,Math.min(l.length-1,i+(e.key==='ArrowDown'?1:-1)))]; if(n){ st.sel=n.id; renderList(); renderDetail(); e.preventDefault(); } }
-});
-onLang(render);
+}
+addEventListener('keydown',onKey);
+onLang(()=>{ if(H.isConnected) render(); });
 
 (async()=>{
   applyI18n();
@@ -104,9 +115,16 @@ onLang(render);
   const last=lu().last||{}; if(last.game&&MAPS[last.game]&&MAPS[last.game][last.map]) st=Object.assign(st,last,{maps:Object.assign({},last.maps||{})});
   running=await invoke('game_status').catch(()=>null);
   if(running&&running!==st.game&&MAPS[running]){ st.game=running; st.map=st.maps[running]||Object.keys(MAPS[running])[0]; st.sel=null; }
-  gamePill($('#gamePill'),running);
-  listen('game-status',p=>{ running=p&&p.game; gamePill($('#gamePill'),running); });
-  listen('data-changed',async p=>{ if(p&&p.from==='lineups') return; await store.load(); renderList(); renderDetail(); });
+  gamePill($('#gamePill',H),running);
+  if(!opts.inline){
+    listen('game-status',p=>{ running=p&&p.game; gamePill($('#gamePill',H),running); });
+    listen('data-changed',async p=>{ if(p&&p.from==='lineups') return; await store.load(); renderList(); renderDetail(); });
+  }
   render();
+  if(!opts.inline) invoke('window_ready').catch(()=>{});
 })();
+return {close:end};
+}
+window.LRLineupsApp={boot};
+if(document.body&&document.body.classList.contains('lu-body')){ applyI18n(); boot(document.body); }
 })();

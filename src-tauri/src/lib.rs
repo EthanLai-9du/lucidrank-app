@@ -78,6 +78,8 @@ struct AppState {
     game: Mutex<Option<String>>,
     labels: Mutex<Labels>,
     tray: Mutex<Option<TrayItems>>,
+    /// secondary windows whose page has booted and called `window_ready`
+    ready: Mutex<std::collections::HashSet<String>>,
 }
 
 // ---------------------------------------------------------------- storage
@@ -127,49 +129,109 @@ fn show_main(app: &AppHandle) {
     }
 }
 
-fn open_checkin(app: &AppHandle, auto: bool) {
-    if let Some(w) = app.get_webview_window("checkin") {
+/// Result of opening a secondary window.
+#[derive(Clone, Copy, PartialEq)]
+enum Opened {
+    Existing,
+    Created,
+}
+
+fn focus_existing(app: &AppHandle, label: &str) -> bool {
+    if let Some(w) = app.get_webview_window(label) {
         let _ = w.show();
         let _ = w.unminimize();
         let _ = w.set_focus();
-        return;
+        return true;
+    }
+    false
+}
+
+// IMPORTANT (Windows / WebView2): never build a webview window on the main thread while it is
+// handling a sync command, tray/menu event or run_on_main_thread closure: WebView2 creation then
+// deadlocks (blank white window, event loop frozen so even the X button stops working).
+// These two builders must only be called from an async command or a spawned thread
+// (see `open_window` and `spawn_open`); `build()` then hands the work to the event loop and waits.
+fn open_checkin(app: &AppHandle, auto: bool) -> Result<Opened, String> {
+    if focus_existing(app, "checkin") {
+        return Ok(Opened::Existing);
     }
     let title = app.state::<AppState>().labels.lock().unwrap().checkin.clone();
-    let res = WebviewWindowBuilder::new(app, "checkin", WebviewUrl::App("checkin.html".into()))
+    let page = test_hook("checkin.html")?;
+    WebviewWindowBuilder::new(app, "checkin", WebviewUrl::App(page.into()))
         .title(format!("LucidRank · {title}"))
-        .inner_size(440.0, 680.0)
+        .inner_size(460.0, 700.0)
         .resizable(false)
         .maximizable(false)
         .minimizable(true)
         .center()
-        // A normal centered window, not an overlay. Kept on top only so it doesn't get
-        // lost behind the launcher; focused once when it opens.
+        // A normal centered window, not an overlay. Kept on top only when it pops up by itself
+        // (game start) so it doesn't get lost behind the launcher; focused once when it opens.
         .always_on_top(auto)
+        // custom dark title bar (see checkin.html); native shadow keeps Win11 rounded corners
+        .decorations(false)
+        .shadow(true)
+        .background_color(tauri::window::Color(12, 12, 15, 255))
         .focused(true)
-        .build();
-    if let Err(e) = res {
-        eprintln!("checkin window: {e}");
-    }
+        .build()
+        .map(|_| Opened::Created)
+        .map_err(|e| e.to_string())
 }
 
-fn open_lineups(app: &AppHandle) {
-    if let Some(w) = app.get_webview_window("lineups") {
-        let _ = w.show();
-        let _ = w.unminimize();
-        let _ = w.set_focus();
-        return;
+fn open_lineups(app: &AppHandle) -> Result<Opened, String> {
+    if focus_existing(app, "lineups") {
+        return Ok(Opened::Existing);
     }
     let title = app.state::<AppState>().labels.lock().unwrap().lineups.clone();
-    let res = WebviewWindowBuilder::new(app, "lineups", WebviewUrl::App("lineups.html".into()))
+    let page = test_hook("lineups.html")?;
+    WebviewWindowBuilder::new(app, "lineups", WebviewUrl::App(page.into()))
         .title(format!("LucidRank · {title}"))
         .inner_size(1120.0, 760.0)
         .min_inner_size(860.0, 600.0)
         .center()
+        .decorations(false)
+        .shadow(true)
+        .background_color(tauri::window::Color(10, 10, 12, 255))
         .focused(true)
-        .build();
-    if let Err(e) = res {
-        eprintln!("lineups window: {e}");
+        .build()
+        .map(|_| Opened::Created)
+        .map_err(|e| e.to_string())
+}
+
+/// Debug-only test hooks for the in-window fallback (never compiled into release builds):
+/// LR_TEST_WINDOWS=fail  -> building the window returns an error
+/// LR_TEST_WINDOWS=blank -> the window loads a page that never reports `window_ready`
+///                          (simulates the blank white WebView2 window from v0.1.0)
+#[cfg(debug_assertions)]
+fn test_hook(page: &str) -> Result<String, String> {
+    match std::env::var("LR_TEST_WINDOWS").as_deref() {
+        Ok("fail") => Err("forced failure (LR_TEST_WINDOWS=fail)".into()),
+        Ok("blank") => Ok("blank-test.html".into()),
+        _ => Ok(page.into()),
     }
+}
+#[cfg(not(debug_assertions))]
+fn test_hook(page: &str) -> Result<String, String> {
+    Ok(page.into())
+}
+
+/// Open a window from contexts that run on the main thread (tray menu). Uses its own thread.
+fn spawn_open(app: &AppHandle, kind: &'static str, auto: bool) {
+    let h = app.clone();
+    thread::spawn(move || {
+        let r = match kind {
+            "checkin" => open_checkin(&h, auto),
+            "lineups" => open_lineups(&h),
+            _ => Ok(Opened::Existing),
+        };
+        if let Err(e) = r {
+            eprintln!("{kind} window: {e}");
+            // fallback: run the check-in inside the main window
+            if kind == "checkin" {
+                show_main(&h);
+                let _ = h.emit_to("main", "checkin-inline", json!({ "reason": e }));
+            }
+        }
+    });
 }
 
 // ---------------------------------------------------------------- game watcher
@@ -227,8 +289,8 @@ fn maybe_prompt(app: &AppHandle, game: &str) {
         .title(&labels.notif_title)
         .body(&labels.notif_body)
         .show();
-    let h = app.clone();
-    let _ = app.run_on_main_thread(move || open_checkin(&h, true));
+    // the watcher already runs on its own thread, so building the window here is safe
+    spawn_open(app, "checkin", true);
 }
 
 fn start_watcher(app: AppHandle) {
@@ -334,11 +396,42 @@ fn skip_today(app: AppHandle, state: tauri::State<AppState>) -> Result<(), Strin
 }
 
 #[tauri::command]
-fn open_window(app: AppHandle, kind: String) {
-    match kind.as_str() {
+async fn open_window(app: AppHandle, kind: String) -> Result<String, String> {
+    // async => runs on a worker thread, never on the main thread (see note on open_checkin)
+    let r = match kind.as_str() {
         "checkin" => open_checkin(&app, false),
         "lineups" => open_lineups(&app),
-        _ => show_main(&app),
+        _ => {
+            show_main(&app);
+            return Ok("existing".into());
+        }
+    }?;
+    // "existing" only if that window's page really booted; otherwise the caller waits for
+    // `window-ready` and falls back to the in-window view if it never comes.
+    let ready = app.state::<AppState>().ready.lock().unwrap().contains(&kind);
+    Ok(match (r, ready) {
+        (Opened::Created, _) => "created",
+        (Opened::Existing, true) => "existing",
+        (Opened::Existing, false) => "pending",
+    }
+    .into())
+}
+
+/// A secondary window calls this once its page has loaded and booted, so the main window
+/// knows the pop-up really works (otherwise it falls back to the in-window check-in).
+#[tauri::command]
+fn window_ready(app: AppHandle, window: tauri::WebviewWindow) {
+    app.state::<AppState>().ready.lock().unwrap().insert(window.label().to_string());
+    let _ = app.emit("window-ready", json!({ "label": window.label() }));
+}
+
+/// Close a secondary window by label (used by the main window's fallback).
+#[tauri::command]
+fn close_window(app: AppHandle, label: String) {
+    if label != "main" {
+        if let Some(w) = app.get_webview_window(&label) {
+            let _ = w.destroy();
+        }
     }
 }
 
@@ -350,6 +443,40 @@ fn close_self(window: tauri::WebviewWindow) {
     } else {
         let _ = window.close();
     }
+}
+
+/// Title-bar buttons of our custom (undecorated) windows. Returns the maximized state.
+#[tauri::command]
+fn win_action(window: tauri::WebviewWindow, action: String) -> bool {
+    match action.as_str() {
+        "min" => {
+            let _ = window.minimize();
+        }
+        "max" => {
+            if window.is_maximizable().unwrap_or(false) {
+                if window.is_maximized().unwrap_or(false) {
+                    let _ = window.unmaximize();
+                } else {
+                    let _ = window.maximize();
+                }
+            }
+        }
+        "close" => {
+            // same as close_self: main hides to the tray, others close
+            if window.label() == "main" {
+                let _ = window.hide();
+            } else {
+                let _ = window.close();
+            }
+        }
+        _ => {}
+    }
+    window.is_maximized().unwrap_or(false)
+}
+
+#[tauri::command]
+fn win_state(window: tauri::WebviewWindow) -> bool {
+    window.is_maximized().unwrap_or(false)
 }
 
 #[tauri::command]
@@ -400,8 +527,8 @@ fn build_tray(app: &AppHandle) -> tauri::Result<()> {
         .show_menu_on_left_click(false)
         .on_menu_event(|app, ev| match ev.id().as_ref() {
             "open" => show_main(app),
-            "checkin" => open_checkin(app, false),
-            "lineups" => open_lineups(app),
+            "checkin" => spawn_open(app, "checkin", false),
+            "lineups" => spawn_open(app, "lineups", false),
             "quit" => app.exit(0),
             _ => {}
         })
@@ -439,6 +566,10 @@ pub fn run() {
             skip_today,
             open_window,
             close_self,
+            win_action,
+            window_ready,
+            close_window,
+            win_state,
             set_labels,
             autostart_get,
             autostart_set,
@@ -456,6 +587,10 @@ pub fn run() {
         })
         .on_window_event(|window, event| {
             if window.label() != "main" {
+                if let WindowEvent::Destroyed = event {
+                    let app = window.app_handle();
+                    app.state::<AppState>().ready.lock().unwrap().remove(window.label());
+                }
                 return;
             }
             if let WindowEvent::CloseRequested { api, .. } = event {

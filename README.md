@@ -19,6 +19,11 @@
 | 道具点位 | 单独窗口。选地图 / 英雄（CS2 为道具类型）/ 攻防 / 场景，看卡片列表、抽象小地图（站位、瞄点、投掷路线、落点）和三步说明，可收藏、标记「学会了」。检测到游戏时标题栏会显示。地图无法自动识别（我们不读游戏数据），所以由你来选，下次会记住。**全部为示例数据**，不是真实可用的 lineup，也没有使用任何 Riot / Valve 素材。 |
 | 设置 | 语言（跟随系统 / 简体 / 繁體 / English）、开机自启、检测哪些游戏、导出 JSON、删除全部数据。 |
 
+## 更新记录
+
+- **v0.1.1**：所有窗口改用深色自绘标题栏（Win11 风格的最小化 / 最大化 / 关闭，关闭键悬停变红，双击标题栏最大化，保留圆角和系统阴影，可拖动边缘调整大小）；鼠标点击不再出现焦点框（只有键盘 Tab 时才显示）；边框整体减淡。修复 Windows 上「开始签到」弹窗白屏、无法关闭，以及「道具点位」窗口打不开的问题（窗口改为在后台线程创建，避免 WebView2 死锁）；如果弹窗仍然打不开，会自动在主窗口里完成签到 / 显示道具点位。签到小窗重新设计：顶部显示游戏状态和「今天不用了」，进度条，更大的选项，完成后 3 秒自动关闭。
+- **v0.1.0**：第一个原型。
+
 ## 安全说明（反作弊）
 
 LucidRank **只**通过系统的进程列表（`sysinfo`，只读进程名）判断 VALORANT / CS2 是否在运行。它：
@@ -33,7 +38,7 @@ LucidRank **只**通过系统的进程列表（`sysinfo`，只读进程名）判
 
 ## 安装
 
-1. 到 [Releases](../../releases) 下载 `LucidRank_0.1.0_x64-setup.exe`（也有 `.msi`）。
+1. 到 [Releases](../../releases) 下载最新的 `LucidRank_<版本>_x64-setup.exe`（例如 `LucidRank_0.1.1_x64-setup.exe`，也有 `.msi`）。直接覆盖安装旧版本即可，数据会保留。
 2. 安装包**没有代码签名**，Windows SmartScreen 会拦一下：点「**更多信息**」→「**仍要运行**」。
 3. 默认装在当前用户目录，不需要管理员权限。需要 WebView2（Win10/11 一般自带，没有的话安装程序会自动下载）。
 
@@ -61,7 +66,7 @@ npm run tauri build        # 打包（Windows 上生成 NSIS .exe 和 .msi）
 - 前端在 `src/`：`index.html`（主窗口）、`checkin.html`（签到小窗）、`lineups.html`（道具点位），文案在 `src/js/i18n.js`（sc / tc / en）。签到题目从概念网站复制而来。
 - Rust 在 `src-tauri/src/lib.rs`：托盘、窗口、进程检测、本地 JSON 读写、通知、开机自启。
 - 在普通浏览器里直接打开 `src/` 也能用（自带 Tauri API 的 localStorage 模拟），方便改界面：`cd src && python3 -m http.server 8765`，然后 `python3 tools/shots.py full` 生成 `shots/` 截图；`node tools/test_stats.js` 检查洞察和目标的规则。
-- GitHub Actions（`.github/workflows/build-windows.yml`）在 `windows-latest` 上用 tauri-action 打包，上传为构建产物，并发布到预发布版本 `v0.1.0`。
+- GitHub Actions（`.github/workflows/build-windows.yml`）在 `windows-latest` 上用 tauri-action 打包，上传为构建产物，并按 `tauri.conf.json` 里的版本号发布预发布版本（`v0.1.1` 等，每个版本一个 Release）。
 
 ## 已知限制（v0.1）
 

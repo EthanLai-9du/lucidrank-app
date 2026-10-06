@@ -3,7 +3,8 @@ Serve src/ first:  python3 -m http.server 8765 --bind 127.0.0.1  (from src/)
 Then:              python3 tools/shots.py   -> shots/*.png"""
 import sys, pathlib
 from playwright.sync_api import sync_playwright
-BASE = "http://127.0.0.1:8765/"
+import os
+BASE = os.environ.get("LR_BASE", "http://127.0.0.1:8765/")
 OUT = pathlib.Path(__file__).resolve().parent.parent / "shots"
 OUT.mkdir(exist_ok=True)
 errors = []

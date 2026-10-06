@@ -53,6 +53,8 @@ const mock={
   skip_today:()=>null,
   open_window:({kind})=>{ if(kind==='checkin') window.open('checkin.html'+location.search,'checkin','width=440,height=680'); else if(kind==='lineups') window.open('lineups.html'+location.search,'lineups','width=1120,height=760'); return null; },
   close_self:()=>{ window.close(); return null; },
+  win_action:({action})=>{ if(action==='close') window.close(); return false; },
+  win_state:()=>false,
   set_labels:()=>null,
   autostart_get:()=>localStorage.getItem('lr-mock-autostart')==='1',
   autostart_set:({on})=>{ localStorage.setItem('lr-mock-autostart',on?'1':'0'); return on; },
@@ -124,6 +126,39 @@ function gamePill(el,g){
   el.classList.toggle('on',!!g);
   el.innerHTML=`<i></i><span>${g?t('game.on',{g:gameName(g)}):t('game.none')}</span>`;
 }
+/* ---------------- custom title bar (windows are undecorated) ----------------
+   <header data-titlebar="min,max,close">: appends Win11-style buttons and marks the bar
+   (and its non-interactive children) as a drag region; double-click toggles maximize. */
+const ICON={min:'<path d="M0 5.5h10"/>',max:'<rect x=".5" y=".5" width="9" height="9" rx="1"/>',
+  restore:'<rect x=".5" y="2.5" width="7" height="7" rx="1"/><path d="M2.5 2.5v-1a1 1 0 011-1h5a1 1 0 011 1v5a1 1 0 01-1 1h-1"/>',close:'<path d="M.5.5l9 9M9.5.5l-9 9"/>'};
+const svgI=k=>`<svg viewBox="0 0 10 10" aria-hidden="true">${ICON[k]}</svg>`;
+function markDrag(bar){
+  const els=[bar,...bar.querySelectorAll('*')];
+  els.forEach(el=>{ if(el.closest('button,a,input,select,label,.no-drag')) el.removeAttribute('data-tauri-drag-region'); else el.setAttribute('data-tauri-drag-region',''); });
+}
+function mountTitlebars(){
+  $$('[data-titlebar]').forEach(bar=>{
+    const want=bar.dataset.titlebar.split(',');
+    const wc=document.createElement('div'); wc.className='wc no-drag';
+    const lbl={min:'tb.min',max:'tb.max',close:bar.dataset.closeLabel||'tb.close'};
+    wc.innerHTML=want.map(k=>`<button class="wc-${k}" data-wc="${k}" tabindex="-1" data-i18n-attr="title:${lbl[k]};aria-label:${lbl[k]}" title="${esc(t(lbl[k]))}" aria-label="${esc(t(lbl[k]))}">${svgI(k)}</button>`).join('');
+    bar.appendChild(wc);
+    const maxBtn=wc.querySelector('[data-wc=max]');
+    const setMax=m=>{ if(maxBtn){ maxBtn.innerHTML=svgI(m?'restore':'max'); const k=m?'tb.restore':'tb.max'; maxBtn.title=t(k); maxBtn.setAttribute('aria-label',t(k)); maxBtn.dataset.i18nAttr=`title:${k};aria-label:${k}`; } root.classList.toggle('maximized',m); };
+    wc.addEventListener('click',async e=>{ const b=e.target.closest('[data-wc]'); if(!b) return; const m=await invoke('win_action',{action:b.dataset.wc}); setMax(!!m); });
+    let rt=0; addEventListener('resize',()=>{ clearTimeout(rt); rt=setTimeout(async()=>setMax(!!await invoke('win_state').catch(()=>false)),120); });
+    invoke('win_state').then(m=>setMax(!!m)).catch(()=>{});
+    markDrag(bar);
+    new MutationObserver(()=>markDrag(bar)).observe(bar,{childList:true,subtree:true});
+  });
+  $$('[data-drag-area]').forEach(markDrag);
+}
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',mountTitlebars); else mountTitlebars();
+
+/* ---------------- focus rings for keyboard users only ---------------- */
+addEventListener('keydown',e=>{ if(e.key==='Tab'||e.key.startsWith('Arrow')) root.classList.add('kbd'); },true);
+addEventListener('pointerdown',()=>root.classList.remove('kbd'),true);
+
 // In a plain browser keep links between pages working
 function preventDragNav(){ addEventListener('dragover',e=>e.preventDefault()); addEventListener('drop',e=>e.preventDefault()); }
 

@@ -32,16 +32,16 @@ jobs:
       - name: Install JS deps (Tauri CLI only)
         run: npm ci
 
-      - name: Build NSIS + MSI and publish prerelease v0.1.0
+      - name: Build NSIS + MSI and publish prerelease v<version from tauri.conf.json>
         uses: tauri-apps/tauri-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: v0.1.0
-          releaseName: LucidRank v0.1.0 (prototype)
+          tagName: v__VERSION__
+          releaseName: LucidRank v__VERSION__ (prototype)
           releaseBody: |
-            LucidRank Windows 桌面原型 v0.1.0（未签名）。
-            下载 `LucidRank_0.1.0_x64-setup.exe` 安装即可。SmartScreen 提示时点「更多信息」→「仍要运行」。
+            LucidRank Windows 桌面原型（未签名）。
+            下载下面的 `LucidRank_*_x64-setup.exe` 安装即可（覆盖安装旧版本，数据会保留）。SmartScreen 提示时点「更多信息」→「仍要运行」。
             安全：只检查进程列表里游戏是否在运行；不读写游戏内存、不注入、不做覆盖层、不截屏、不模拟输入。
           releaseDraft: false
           prerelease: true

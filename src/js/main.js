@@ -41,7 +41,7 @@ function renderToday(){
     <div class="col">
       <div class="card ci-card${rec?' done':''}">
         ${rec?`<div class="row between"><h2>${t('today.ciDone')} <span class="ok-dot">✓</span></h2><button class="btn ghost sm" data-act="checkin">${t('today.ciRedo')}</button></div>${ciChips(rec.a)}`
-             :`<h2>${t('today.ciTodo')}</h2><p class="muted">${t('today.ciTodoP')}</p><div class="ci-cta"><button class="btn primary" data-act="checkin">${t('today.ciGo')}</button><span class="keys"><kbd>1</kbd>–<kbd>5</kbd> · ≈10 s</span></div>`}
+             :`<h2>${t('today.ciTodo')}</h2><p class="muted">${t('today.ciTodoP')}</p><div class="ci-cta"><button class="btn primary" data-act="checkin">${t('today.ciGo')}</button><span class="keys"><kbd>1</kbd>–<kbd>5</kbd> · ≈10 s</span><span class="grow"></span><button class="link-btn" data-act="checkinHere">${t('today.here')}</button></div>`}
       </div>
       <div class="card">
         <h2>${t('today.matches')}</h2>
@@ -207,8 +207,36 @@ function renderSettings(){
 }
 
 /* ---------------- actions ---------------- */
+/* ---------------- secondary windows, with an in-window fallback ----------------
+   The pop-up has to report back (window-ready) within a few seconds; if creating it fails or
+   it never boots, we close it and run the same check-in / lineups inside this window. */
+let inline=null;
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+async function openSecondary(kind){
+  if(!LR.isTauri) return invoke('open_window',{kind});
+  let ready=false, un=null;
+  try{ un=await listen('window-ready',p=>{ if(p&&p.label===kind) ready=true; }); }catch(e){}
+  let r='error';
+  try{ r=await Promise.race([invoke('open_window',{kind}),wait(8000).then(()=>'timeout')]); }catch(e){ console.error(e); }
+  if(r==='created'||r==='pending'||r==='timeout'){ for(let i=0;i<70&&!ready;i++) await wait(150); }
+  if(typeof un==='function') un();
+  if(r==='existing'||ready) return;
+  invoke('close_window',{label:kind}).catch(()=>{});
+  showInline(kind,true);
+}
+function showInline(kind,failed){
+  if(inline) inline.close();
+  const host=$('#v-inline');
+  $$('.view').forEach(s=>s.classList.toggle('on',s===host));
+  invoke('open_window',{kind:'main'}).catch(()=>{});
+  const close=()=>{ inline=null; host.innerHTML=''; setView(view); };
+  inline=kind==='lineups'?LRLineupsApp.boot(host,{inline:true,close}):LRCheckin.boot(host,{inline:true,close});
+  if(failed) toast(t('fb.note'),3500);
+}
+window.LRMain={showInline,openSecondary};
 async function act(a){
-  if(a==='checkin') return invoke('open_window',{kind:'checkin'});
+  if(a==='checkin') return openSecondary('checkin');
+  if(a==='checkinHere') return showInline('checkin');
   if(a==='sample'){ await store.update(d=>S.sampleData(d)); return render(); }
   if(a==='sampleClear'){ await store.update(d=>S.clearSample(d)); return render(); }
   if(a==='lock'){ const w=S.weekly(D()); const g=Object.assign({},w.proposals[proposalIdx]||w.proposals[0],{setOn:dayKey()}); await store.update(d=>{ d.goals[w.ws]=g; }); return render(); }
@@ -221,13 +249,14 @@ document.addEventListener('click',async e=>{
   const d=e.target.closest('[data-del]'); if(d){ const id=d.dataset.del; await store.update(s=>{ s.matches=s.matches.filter(m=>m.id!==id); }); render(); return; }
   const go=e.target.closest('[data-go]'); if(go){ setView(go.dataset.go); return; }
 });
-$$('#nav button').forEach(b=>b.addEventListener('click',()=>{ if(b.dataset.open) invoke('open_window',{kind:b.dataset.open}); else setView(b.dataset.view); }));
+$$('#nav button').forEach(b=>b.addEventListener('click',()=>{ if(b.dataset.open) openSecondary(b.dataset.open); else setView(b.dataset.view); }));
 function setView(v){
+  if(inline){ const i=inline; inline=null; i.close(); }
   view=v; $$('#nav button[data-view]').forEach(b=>b.classList.toggle('on',b.dataset.view===v));
   $$('.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+v)); render(); $('#content').scrollTop=0;
 }
 const R={today:renderToday,matches:renderMatches,insights:renderInsights,week:renderWeek,settings:renderSettings};
-function render(){ R[view](); }
+function render(){ if(inline) return; R[view](); }
 onLang(render);
 
 /* ---------------- boot ---------------- */
@@ -239,7 +268,8 @@ onLang(render);
   [autostartOn,dataLoc,appInfo,game]=await Promise.all([invoke('autostart_get').catch(()=>false),invoke('data_location').catch(()=>''),invoke('app_info').catch(()=>appInfo),invoke('game_status').catch(()=>null)]);
   gamePill($('#gamePill'),game); onLang(()=>gamePill($('#gamePill'),game));
   listen('game-status',p=>{ game=p&&p.game; gamePill($('#gamePill'),game); });
-  listen('data-changed',async p=>{ if(p&&p.from==='main') return; await store.load(); render(); });
+  listen('data-changed',async p=>{ if(p&&p.from==='main') return; await store.load(); if(!inline) render(); });
+  listen('checkin-inline',()=>showInline('checkin',true));
   const qv=new URLSearchParams(location.search).get('view'); if(qv&&R[qv]) setView(qv); else render();
   // day rollover / periodic refresh (week dots, "today")
   let lastDay=dayKey(); setInterval(()=>{ if(dayKey()!==lastDay){ lastDay=dayKey(); render(); } },60e3);
