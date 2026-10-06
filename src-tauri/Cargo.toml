@@ -1,0 +1,32 @@
+[package]
+name = "lucidrank"
+version = "0.1.0"
+description = "LucidRank: daily check-in + match log for VALORANT / CS2 players"
+authors = ["EthanLai-9du"]
+edition = "2021"
+
+[lib]
+name = "lucidrank_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon", "image-png"] }
+tauri-plugin-autostart = "2"
+tauri-plugin-notification = "2"
+tauri-plugin-dialog = "2"
+tauri-plugin-single-instance = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
+# Only used to list running process names (no memory access, no handles to game processes).
+sysinfo = { version = "0.39", default-features = false, features = ["system"] }
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+panic = "abort"
+strip = true
