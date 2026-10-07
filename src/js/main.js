@@ -193,6 +193,7 @@ function renderSettings(){
     <div class="srow"><div><h3>${t('s.watch')}</h3><p class="muted sm">${t('s.watchP')}</p></div><div class="col-r">
       ${['val','cs2'].map(g=>`<label class="chk"><input type="checkbox" data-watch="${g}"${s.watch[g]!==false?' checked':''}><i></i>${gameName(g)}</label>`).join('')}</div></div>
   </div>
+  ${window.LRUpdater?LRUpdater.card():''}
   <div class="card set">
     <div class="srow"><div><h3>${t('s.data')}</h3><p class="muted sm">${t('s.dataP')}</p><p class="loc"><span>${t('s.loc')}</span><code>${esc(dataLoc)}</code></p></div></div>
     <div class="row gap wrap"><button class="btn ghost" data-act="export">${t('s.export')}</button>

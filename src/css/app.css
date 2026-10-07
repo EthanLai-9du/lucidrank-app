@@ -377,3 +377,17 @@ html.kbd .wc button:focus-visible{outline-offset:-2px;border-radius:0}
 /* compact match rows in the narrow Today card */
 #v-today .mrow{grid-template-columns:40px minmax(0,1fr) auto auto 24px;gap:8px}
 #v-today .mrow>:nth-child(5),#v-today .mrow>:nth-child(6){display:none}
+
+/* in-app update card (desktop only, js/updater.js) */
+.upd{position:fixed;right:20px;bottom:20px;width:320px;z-index:40;background:var(--ink3);border:1px solid var(--line2);border-radius:var(--r-lg);padding:14px 16px;font-size:13px;line-height:1.55;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.upd-h b{font-weight:600;font-size:13.5px}
+.upd-n{color:var(--t2);margin-top:4px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.upd-p{margin-top:10px;display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--t2)}
+.upd-bar{height:4px;border-radius:4px;background:var(--t4);overflow:hidden}
+.upd-bar i{display:block;height:100%;background:var(--t1);border-radius:4px;transition:width .2s}
+.upd-msg{margin-top:8px;font-size:12.5px;color:var(--t2)}
+.upd .row.gap{margin-top:12px}
+.upd-status p{margin-top:6px}
+.upd-avail{color:var(--t1)}
+.upd-err{color:var(--t2)}
+.btn[disabled]{opacity:.5;pointer-events:none}

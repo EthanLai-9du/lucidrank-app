@@ -1,0 +1,3 @@
+sc: 应用内更新：以后有新版本会在这里提醒你，点一下就能装好。换了新标语。
+tc: 應用內更新：之後有新版本會在這裏提醒你，按一下就能裝好。換了新標語。
+en: In-app updates: new versions show up right here, one click to install. New tagline.

@@ -6,6 +6,8 @@
 //! process, never read or write its memory, never inject or hook, never draw over it,
 //! never capture the screen, never send input. All windows are normal, separate windows.
 
+mod updater;
+
 use std::{
     fs,
     path::PathBuf,
@@ -97,6 +99,25 @@ fn data_file(app: &AppHandle) -> PathBuf {
 }
 fn prompt_file(app: &AppHandle) -> PathBuf {
     data_dir(app).join("prompt-state.json")
+}
+fn update_file(app: &AppHandle) -> PathBuf {
+    data_dir(app).join("update-state.json")
+}
+
+/// Written right before the installer runs, so the relaunched app can say "updated to vX" and
+/// show its window even if the original process was started hidden (--autostart).
+pub(crate) fn mark_updated(app: &AppHandle, version: &str) {
+    let at = chrono::Local::now().timestamp();
+    let _ = write_json(&update_file(app), &json!({ "updatedTo": version, "at": at }));
+}
+
+/// The version we just updated to, if the marker is fresh (consumed by `update_notice`).
+fn just_updated(app: &AppHandle) -> Option<String> {
+    let v = read_json(&update_file(app));
+    let at = v["at"].as_i64()?;
+    let fresh = (chrono::Local::now().timestamp() - at).abs() < 30 * 60;
+    let to = v["updatedTo"].as_str()?.to_string();
+    (fresh && to == app.package_info().version.to_string()).then_some(to)
 }
 
 fn read_json(path: &PathBuf) -> Value {
@@ -505,6 +526,14 @@ fn autostart_set(app: AppHandle, on: bool) -> Result<bool, String> {
     Ok(al.is_enabled().unwrap_or(on))
 }
 
+/// "Updated to vX" toast, once, right after an in-app update.
+#[tauri::command]
+fn update_notice(app: AppHandle) -> Option<String> {
+    let v = just_updated(&app);
+    let _ = fs::remove_file(update_file(&app));
+    v
+}
+
 #[tauri::command]
 fn app_info() -> Value {
     json!({ "version": env!("CARGO_PKG_VERSION"), "today": today_key(), "os": std::env::consts::OS })
@@ -554,7 +583,10 @@ pub fn run() {
         .plugin(tauri_plugin_autostart::init(MacosLauncher::LaunchAgent, Some(vec!["--autostart"])))
         .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_process::init())
         .manage(AppState::default())
+        .manage(updater::UpdState::default())
         .invoke_handler(tauri::generate_handler![
             load_data,
             save_data,
@@ -573,12 +605,16 @@ pub fn run() {
             set_labels,
             autostart_get,
             autostart_set,
-            app_info
+            app_info,
+            update_notice,
+            updater::update_check,
+            updater::update_install
         ])
         .setup(|app| {
             let h = app.handle().clone();
             build_tray(&h)?;
-            let hidden = std::env::args().any(|a| a == "--autostart" || a == "--hidden");
+            // after an in-app update the installer relaunches us with the old args; show the window anyway
+            let hidden = std::env::args().any(|a| a == "--autostart" || a == "--hidden") && just_updated(&h).is_none();
             if !hidden {
                 show_main(&h);
             }

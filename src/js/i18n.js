@@ -3,7 +3,7 @@
    {name} = runtime value. Arrays keep the same order in every language. 'key.one' = English singular. */
 const I18N = {
   /* ---- app chrome ---- */
-  'app.tagline': {sc:'睡醒了再排。', tc:'睡醒了才排位。', en:'Wake up before you queue.'},
+  'app.tagline': {sc:'先清醒，再上分。', tc:'先清醒，再上分。', en:'Clear head first. Then climb.'},
   'nav.today': {sc:'今天', tc:'今天', en:'Today'},
   'nav.matches': {sc:'战绩', tc:'戰績', en:'Matches'},
   'nav.insights': {sc:'洞察', tc:'洞察', en:'Insights'},
@@ -163,7 +163,7 @@ const I18N = {
   's.watch': {sc:'检测哪些游戏', tc:'偵測哪些遊戲', en:'Games to watch'},
   's.watchP': {sc:'游戏启动时，如果今天还没签到，会弹一次签到小窗（每天最多一次）。', tc:'遊戲啟動時，如果今天還未簽到，會彈出一次簽到小視窗（每天最多一次）。', en:'When a game starts and you haven’t checked in, a small check-in window pops up once (max once a day).'},
   's.data': {sc:'数据', tc:'數據', en:'Data'},
-  's.dataP': {sc:'全部数据只存在这台电脑上。没有账号，不联网。', tc:'全部數據只存在這部電腦。沒有帳號，不連網。', en:'Everything stays on this PC. No account, no network.'},
+  's.dataP': {sc:'全部数据只存在这台电脑上。没有账号，不上传任何东西。', tc:'全部數據只存在這部電腦。沒有帳號，不會上傳任何東西。', en:'Everything stays on this PC. No account, nothing gets uploaded.'},
   's.loc': {sc:'存放位置', tc:'存放位置', en:'Location'},
   's.export': {sc:'导出 JSON', tc:'匯出 JSON', en:'Export JSON'},
   's.exported': {sc:'已导出到 {p}', tc:'已匯出到 {p}', en:'Exported to {p}'},
@@ -172,6 +172,24 @@ const I18N = {
   's.deleted': {sc:'已删除。', tc:'已刪除。', en:'Deleted.'},
   's.safety': {sc:'安全说明', tc:'安全說明', en:'Safety'},
   's.safetyP': {sc:'LucidRank 只看系统进程列表里有没有 VALORANT / CS2 在运行。不读写游戏内存、不注入、不 hook、不在游戏上画覆盖层、不截屏、不模拟键鼠。它就是一个普通窗口，像手机上的攻略一样，切出来看。', tc:'LucidRank 只看系統程序列表入面有沒有 VALORANT / CS2 在運行。不讀寫遊戲記憶體、不注入、不 hook、不在遊戲上畫覆蓋層、不截圖、不模擬鍵鼠。它只是一個普通視窗，好似手機上的攻略，切出來看。', en:'LucidRank only checks the system process list to see whether VALORANT or CS2 is running. It never reads or writes game memory, injects, hooks, draws overlays, captures the screen or automates input. It’s a normal window you alt-tab to, like a guide on your phone.'},
+  /* ---- updates (desktop only; js/updater.js) ---- */
+  'up.h': {sc:'更新', tc:'更新', en:'Updates'},
+  'up.cur': {sc:'当前版本 v{v}', tc:'目前版本 v{v}', en:'You’re on v{v}'},
+  'up.check': {sc:'检查更新', tc:'檢查更新', en:'Check for updates'},
+  'up.checking': {sc:'正在检查…', tc:'正在檢查…', en:'Checking…'},
+  'up.latest': {sc:'已经是最新版本。', tc:'已經是最新版本。', en:'You’re up to date.'},
+  'up.failed': {sc:'没连上更新服务器，等会儿再试。', tc:'連不上更新伺服器，稍後再試。', en:'Couldn’t reach the update server. Try again later.'},
+  'up.auto': {sc:'自动检查更新', tc:'自動檢查更新', en:'Check for updates automatically'},
+  'up.autoP': {sc:'打开时和之后每 6 小时看一眼有没有新版本。有的话先问你，不会自己装。只下载一个版本信息文件，不上传任何数据。', tc:'開啟時和之後每 6 小時看一眼有沒有新版本。有的話先問你，不會自己安裝。只下載一個版本資訊檔，不上傳任何數據。', en:'Looks for a new version at launch and every 6 hours. It asks before installing anything, and only downloads a small version file.'},
+  'up.found': {sc:'有新版本 v{v}', tc:'有新版本 v{v}', en:'New version v{v}'},
+  'up.now': {sc:'现在更新', tc:'現在更新', en:'Update now'},
+  'up.later': {sc:'稍后', tc:'稍後', en:'Later'},
+  'up.dl': {sc:'正在下载 {p}', tc:'正在下載 {p}', en:'Downloading {p}'},
+  'up.alt': {sc:'这条线路太慢，换一条…', tc:'這條線路太慢，換一條…', en:'Too slow, trying the other mirror…'},
+  'up.installing': {sc:'下载完成，正在安装，马上重启…', tc:'下載完成，正在安裝，馬上重新啟動…', en:'Downloaded. Installing, back in a moment…'},
+  'up.dlFail': {sc:'没下载成功，等会儿再试。', tc:'下載失敗，稍後再試。', en:'The download didn’t finish. Try again later.'},
+  'up.dry': {sc:'已下载并校验签名（测试模式，没有安装）。', tc:'已下載並校驗簽名（測試模式，沒有安裝）。', en:'Downloaded and signature checked (test mode, not installed).'},
+  'up.done': {sc:'已更新到 v{v}', tc:'已更新到 v{v}', en:'Updated to v{v}'},
   's.about': {sc:'关于', tc:'關於', en:'About'},
   's.aboutP': {sc:'v{v} · 原型版本。功能和数据格式之后可能会变。', tc:'v{v} · 原型版本。功能和數據格式之後可能會變。', en:'v{v} · Prototype. Features and data format may change.'},
 
