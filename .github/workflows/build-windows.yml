@@ -50,18 +50,19 @@ jobs:
           releaseDraft: false
           # full releases (not pre-releases) so .../releases/latest/download/latest.json resolves for the updater
           prerelease: false
-          includeUpdaterJson: true
+          uploadUpdaterJson: true
           updaterJsonPreferNsis: true
           args: --bundles nsis,msi
 
-      - name: Put the short trilingual notes (src-tauri/update-notes.txt) into the release's latest.json
+      - name: Fix up the release's latest.json (short trilingual notes, public download URLs)
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           V=$(node -p "require('./src-tauri/tauri.conf.json').version")
           gh release download "v$V" -R "$GITHUB_REPOSITORY" -p latest.json -D upd --clobber
-          node -e "const fs=require('fs');const j=JSON.parse(fs.readFileSync('upd/latest.json','utf8'));j.notes=fs.readFileSync('src-tauri/update-notes.txt','utf8').trim();fs.writeFileSync('upd/latest.json',JSON.stringify(j,null,2));console.log(JSON.stringify(Object.keys(j.platforms)))"
+          gh api "repos/$GITHUB_REPOSITORY/releases/tags/v$V" > upd/release.json
+          node tools/fix-latest-json.js upd/latest.json upd/release.json src-tauri/update-notes.txt
           gh release upload "v$V" -R "$GITHUB_REPOSITORY" upd/latest.json --clobber
 
       - name: Upload installers as workflow artifact
