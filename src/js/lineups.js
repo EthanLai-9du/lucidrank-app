@@ -3,40 +3,41 @@
 (function(){
 'use strict';
 const {$,$$,esc,t,raw,applyI18n,onLang,invoke,listen,store,gamePill,gameName}=LR;
-const {MAPS,AGENTS,UTIL,ABIL,UTIL_NAME,LINEUPS}=LRLineups;
+const {MAPS,UTIL,ABIL,UTIL_NAME}=LRLineups;const AGENTS=LRCatalog.agents;let LINEUPS=[];const refreshItems=()=>{LINEUPS=[...LRLineups.LINEUPS.filter(x=>x.game!=='val'),...(window.LRTutorials?.items||[])];};refreshItems();
 const tx=o=>o?(o[LR.lang]||o.sc||o.en):'';
 function boot(H,opts={}){
 const close=opts.close||(()=>invoke('close_self'));
 let alive=true;
-const end=()=>{ if(!alive) return; alive=false; removeEventListener('keydown',onKey); close(); };
+const end=()=>{ if(!alive) return; alive=false;unsubscribe?.(); removeEventListener('keydown',onKey); close(); };
 if(opts.inline){
   H.innerHTML=`<div class="lu-inline"><header class="lu-head inline"><button class="btn ghost sm" data-back>${t('fb.back')}</button><h1>${t('lu.h')}</h1><span class="tag-demo">${t('lu.example')}</span><span class="grow"></span><span class="muted sm num" id="luProg"></span><div class="game-pill" id="gamePill"></div></header>
   <div class="lu-grid"><aside class="lu-filters" id="luFilters"></aside><section class="lu-list" id="luList"></section><section class="lu-detail" id="luDetail"></section></div></div>`;
 }
-let st={game:'val',map:'Ascent',agent:'any',util:'any',side:'any',scn:'any',favOnly:false,sel:null,maps:{}};
+let st={game:'val',map:'Ascent',agent:'any',util:'any',side:'any',scn:'any',favOnly:false,sel:null,maps:{},query:''};
 let running=null;
 const SCN=['exec','post','retake','hold'];
 
 const lu=()=>store.data.lineups;
 const isFav=id=>lu().fav.includes(id), isLearned=id=>lu().learned.includes(id);
 function filtered(){
-  return LINEUPS.filter(x=>x.game===st.game&&x.map===st.map
+  return LINEUPS.filter(x=>(!st.query||[tx(x.title),LRCatalog.agentName(x.agent),tx(x.to)].join(' ').toLowerCase().includes(st.query.toLowerCase()))&&x.game===st.game&&x.map===st.map
     &&(st.game!=='val'||st.agent==='any'||x.agent===st.agent)
     &&(st.game!=='cs2'||st.util==='any'||x.util===st.util)
     &&(st.side==='any'||x.side===st.side)&&(st.scn==='any'||x.scn===st.scn)&&(!st.favOnly||isFav(x.id)));
 }
 const chip=(attr,val,label,on)=>`<button class="chip" data-${attr}="${esc(val)}" aria-pressed="${on}">${label}</button>`;
-function title(x){ return `${esc(tx(ABIL[x.ab]))} <span class="arrow">→</span> ${esc(tx(x.to))}`; }
+function title(x){if(x.tutorial)return esc(tx(x.title)); return `${esc(tx(ABIL[x.ab]))} <span class="arrow">→</span> ${esc(tx(x.to))}`; }
 
 function renderFilters(){
-  const el=$('#luFilters',H), maps=Object.keys(MAPS[st.game]);
+  const el=$('#luFilters',H), maps=LRCatalog.maps[st.game];
   el.innerHTML=`
-    <div class="seg full">${['val','cs2'].map(g=>`<button data-game="${g}" aria-pressed="${st.game===g}">${gameName(g)}</button>`).join('')}</div>
-    <div class="fblock"><label class="lbl">${t('lu.map')}</label><div class="chips">${maps.map(m=>chip('map',m,m,st.map===m)).join('')}</div>
+    <label class="lbl">${window.LRTutorials?LRTutorials.t('search'):'Search'}<input data-tutorial-search value="${esc(st.query||'')}" type="search"></label><div class="seg full">${['val','cs2'].map(g=>`<button data-game="${g}" aria-pressed="${st.game===g}">${gameName(g)}</button>`).join('')}</div>
+    <div class="lu-compact-filters"><label class="lbl">${t('lu.map')}<select data-compact-filter="map">${maps.map(m=>`<option value="${esc(m)}" ${st.map===m?'selected':''}>${esc(LRCatalog.mapName(m))}</option>`).join('')}</select></label><label class="lbl">${t(st.game==='val'?'lu.agent':'lu.util')}<select data-compact-filter="${st.game==='val'?'agent':'util'}">${[['any',t('lu.any')],...(st.game==='val'?AGENTS.map(a=>[a,LRCatalog.agentName(a)]):UTIL.map(u=>[u,tx(UTIL_NAME[u])]))].map(([v,l])=>`<option value="${esc(v)}" ${v===(st.game==='val'?st.agent:st.util)?'selected':''}>${esc(l)}</option>`).join('')}</select></label></div>
+    <div class="fblock lu-wide-filters"><label class="lbl">${t('lu.map')}</label><div class="chips">${maps.map(m=>chip('map',m,esc(LRCatalog.mapName(m)),st.map===m)).join('')}</div>
       <p class="muted xs">${t('lu.pickMap')}</p></div>
     ${st.game==='val'
-      ?`<div class="fblock"><label class="lbl">${t('lu.agent')}</label><div class="chips">${chip('agent','any',t('lu.any'),st.agent==='any')}${AGENTS.map(a=>chip('agent',a,a,st.agent===a)).join('')}</div></div>`
-      :`<div class="fblock"><label class="lbl">${t('lu.util')}</label><div class="chips">${chip('util','any',t('lu.any'),st.util==='any')}${UTIL.map(u=>chip('util',u,esc(tx(UTIL_NAME[u])),st.util===u)).join('')}</div></div>`}
+      ?`<div class="fblock lu-wide-filters"><label class="lbl">${t('lu.agent')}</label><div class="chips">${chip('agent','any',t('lu.any'),st.agent==='any')}${AGENTS.map(a=>chip('agent',a,esc(LRCatalog.agentName(a)),st.agent===a)).join('')}</div></div>`
+      :`<div class="fblock lu-wide-filters"><label class="lbl">${t('lu.util')}</label><div class="chips">${chip('util','any',t('lu.any'),st.util==='any')}${UTIL.map(u=>chip('util',u,esc(tx(UTIL_NAME[u])),st.util===u)).join('')}</div></div>`}
     <div class="fblock"><label class="lbl">${t('lu.side')}</label><div class="seg full">${[['any',t('lu.any')],['atk',t('lu.atk')],['def',t('lu.def')]].map(([k,l])=>`<button data-side="${k}" aria-pressed="${st.side===k}">${l}</button>`).join('')}</div></div>
     <div class="fblock"><label class="lbl">${t('lu.scn')}</label><div class="chips">${chip('scn','any',t('lu.any'),st.scn==='any')}${SCN.map(s=>chip('scn',s,t('lu.s.'+s),st.scn===s)).join('')}</div></div>
     <label class="chk"><input type="checkbox" id="favOnly"${st.favOnly?' checked':''}><i></i>${t('lu.favOnly')}</label>`;
@@ -44,10 +45,10 @@ function renderFilters(){
 function renderList(){
   const el=$('#luList',H), list=filtered();
   if(!list.find(x=>x.id===st.sel)) st.sel=list[0]?list[0].id:null;
-  el.innerHTML=`<div class="lu-count muted xs">${st.map} · ${t('lu.count',{n:list.length})}</div>`+(list.length?list.map(x=>`
+  el.innerHTML=`<div class="lu-count muted xs">${esc(LRCatalog.mapName(st.map))} · ${t('lu.count',{n:list.length})}</div>`+(list.length?list.map(x=>`
     <button class="lcard${x.id===st.sel?' on':''}" data-sel="${x.id}">
       <span class="lt">${title(x)}</span>
-      <span class="lm">${esc(x.agent||tx(UTIL_NAME[x.util]))} · ${t('lu.'+x.side)} · ${t('lu.s.'+x.scn)}</span>
+      <span class="lm">${esc(LRCatalog.agentName(x.agent)||tx(UTIL_NAME[x.util]))} · ${t('lu.'+x.side)} · ${t('lu.s.'+x.scn)}</span>
       <span class="lflags">${isFav(x.id)?'<b class="fav">★</b>':''}${isLearned(x.id)?'<b class="lrn">✓</b>':''}</span>
     </button>`).join(''):`<p class="muted sm pad">${t('lu.none')}</p>`);
   const all=LINEUPS.filter(x=>x.game===st.game);
@@ -67,13 +68,14 @@ function minimap(x){
   g+=`<circle cx="${x.l[0]}" cy="${x.l[1]}" r="5" fill="rgba(255,106,61,.16)" stroke="rgba(255,106,61,.6)" stroke-width=".4"/><circle cx="${x.l[0]}" cy="${x.l[1]}" r="1.2" fill="#ff6a3d"/>`;
   g+=`<g transform="translate(${x.m[0]} ${x.m[1]})" stroke="#ffc46b" stroke-width=".55" stroke-linecap="round"><circle r="2.4" fill="rgba(10,10,12,.7)"/><path d="M0 -3.8V-1.4M0 1.4V3.8M-3.8 0H-1.4M1.4 0H3.8"/></g>`;
   g+=`<circle cx="${x.s[0]}" cy="${x.s[1]}" r="2.6" fill="rgba(69,230,196,.18)" stroke="#45e6c4" stroke-width=".5"/><circle cx="${x.s[0]}" cy="${x.s[1]}" r="1" fill="#45e6c4"/>`;
-  return `<svg class="mm" viewBox="-2 -2 104 104" role="img" aria-label="${esc(x.map)}">${g}</svg>`;
+  return `<svg class="mm" viewBox="-2 -2 104 104" role="img" aria-label="${esc(LRCatalog.mapName(x.map))}">${g}</svg>`;
 }
 function renderDetail(){
   const el=$('#luDetail',H), x=LINEUPS.find(y=>y.id===st.sel);
+  if(x?.tutorial){el.innerHTML=LRTutorials.render(x);return;}
   if(!x){ el.innerHTML=`<div class="lu-empty muted">${t('lu.none')}</div>`; return; }
   el.innerHTML=`
-    <div class="ld-head"><div><h2>${title(x)}</h2><p class="muted sm">${esc(x.map)} · ${esc(x.agent||tx(UTIL_NAME[x.util]))} · ${t('lu.'+x.side)} · ${t('lu.s.'+x.scn)}</p></div>
+    <div class="ld-head"><div><h2>${title(x)}</h2><p class="muted sm">${esc(LRCatalog.mapName(x.map))} · ${esc(LRCatalog.agentName(x.agent)||tx(UTIL_NAME[x.util]))} · ${t('lu.'+x.side)} · ${t('lu.s.'+x.scn)}</p></div>
       <div class="row gap"><button class="tbtn${isFav(x.id)?' on':''}" data-tog="fav" aria-pressed="${isFav(x.id)}">★ ${t('lu.fav')}</button><button class="tbtn lrn${isLearned(x.id)?' on':''}" data-tog="learned" aria-pressed="${isLearned(x.id)}">✓ ${t('lu.learned')}</button></div></div>
     <div class="ld-body">
       <div class="mm-wrap">${minimap(x)}<div class="legend"><span><i class="lg s"></i>${t('lu.stand')}</span><span><i class="lg m"></i>${t('lu.aim')}</span><span><i class="lg l"></i>${t('lu.land')}</span><span class="tag-demo">${t('sample')}</span></div></div>
@@ -81,15 +83,16 @@ function renderDetail(){
         <ol><li><b>${t('lu.stand')}</b>${esc(tx(x.stand))}</li><li><b>${t('lu.aim')}</b>${esc(tx(x.aim))}</li><li><b>${esc(tx(ABIL[x.ab]))}</b>${t('lu.t.'+x.throw)}</li></ol></div>
     </div>`;
 }
-function render(){ renderFilters(); renderList(); renderDetail(); }
+function render(){refreshItems();renderFilters();renderList();renderDetail();const tag=H.querySelector('.lu-head .tag-demo');if(tag)tag.hidden=st.game==='val';}
 let saveT=0;
 function remember(){ clearTimeout(saveT); saveT=setTimeout(()=>store.update(d=>{ d.lineups.last=Object.assign({},st); }),400); }
 
 H.addEventListener('click',async e=>{
   const b=e.target.closest('button'); if(!b) return;
+  if(b.dataset.tutorialVideo){const host=H.querySelector('[data-video-host]');if(host){const frame=document.createElement('iframe');frame.src='https://www.youtube-nocookie.com/embed/'+b.dataset.tutorialVideo;frame.title='Lineup video';frame.allowFullscreen=true;frame.style.cssText='width:100%;aspect-ratio:16/9;border:0;margin-top:16px';host.replaceChildren(frame);}return;}
   if(b.dataset.back!==undefined){ end(); return; }
   const d=b.dataset;
-  if(d.game){ st.game=d.game; st.map=st.maps[st.game]||Object.keys(MAPS[st.game])[0]; st.sel=null; }
+  if(d.game){ st.game=d.game; st.map=st.maps[st.game]||LRCatalog.maps[st.game][0]; st.sel=null; }
   else if(d.map){ st.map=d.map; st.maps[st.game]=d.map; st.sel=null; }
   else if(d.agent) st.agent=d.agent;
   else if(d.util) st.util=d.util;
@@ -100,7 +103,9 @@ H.addEventListener('click',async e=>{
   else return;
   render(); remember();
 });
-H.addEventListener('change',e=>{ if(e.target.id==='favOnly'){ st.favOnly=e.target.checked; render(); remember(); } });
+H.addEventListener('input',e=>{if(e.target.matches('[data-tutorial-search]')){st.query=e.target.value;renderList();renderDetail();}});
+const unsubscribe=window.LRTutorials?.subscribe(()=>{if(H.isConnected){refreshItems();renderList();renderDetail();}});
+H.addEventListener('change',e=>{const filter=e.target.dataset.compactFilter;if(filter&&['map','agent','util'].includes(filter)){st[filter]=e.target.value;if(filter==='map'){st.maps[st.game]=st.map;st.sel=null;}render();remember();return;} if(e.target.id==='favOnly'){ st.favOnly=e.target.checked; render(); remember(); } });
 function onKey(e){
   if(!H.isConnected){ removeEventListener('keydown',onKey); return; }
   if(e.key==='Escape'){ end(); return; }
@@ -112,7 +117,7 @@ onLang(()=>{ if(H.isConnected) render(); });
 (async()=>{
   applyI18n();
   await store.load();
-  const last=lu().last||{}; if(last.game&&MAPS[last.game]&&MAPS[last.game][last.map]) st=Object.assign(st,last,{maps:Object.assign({},last.maps||{})});
+  const last=lu().last||{}; if(last.game&&MAPS[last.game]&&LRCatalog.maps[last.game].includes(last.map)) st=Object.assign(st,last,{maps:Object.assign({},last.maps||{})});
   running=await invoke('game_status').catch(()=>null);
   if(running&&running!==st.game&&MAPS[running]){ st.game=running; st.map=st.maps[running]||Object.keys(MAPS[running])[0]; st.sel=null; }
   gamePill($('#gamePill',H),running);
@@ -120,7 +125,7 @@ onLang(()=>{ if(H.isConnected) render(); });
     listen('game-status',p=>{ running=p&&p.game; gamePill($('#gamePill',H),running); });
     listen('data-changed',async p=>{ if(p&&p.from==='lineups') return; await store.load(); renderList(); renderDetail(); });
   }
-  render();
+  if(window.LRTutorials)await LRTutorials.ready;render();
   if(!opts.inline) invoke('window_ready').catch(()=>{});
 })();
 return {close:end};

@@ -20,8 +20,8 @@ const MAPS={
 const AGENTS=['Sova','Viper','Brimstone','Killjoy'];
 const UTIL=['smoke','flash','molly'];
 const ABIL={
-  recon:L('侦查箭','偵查箭','Recon Bolt'), shock:L('震击箭','震擊箭','Shock Dart'), incen:L('燃烧弹','燃燒彈','Incendiary'),
-  nano:L('纳米蜂群','納米蜂群','Nanoswarm'), snake:L('蛇咬','蛇咬','Snake Bite'), wall:L('毒幕','毒幕','Toxic Screen'),
+  recon:L('寻敌箭','偵察箭','Recon Bolt'), shock:L('雷击箭','震波箭','Shock Dart'), incen:L('燃烧榴弹','灼人燃彈','Incendiary'),
+  nano:L('纳米蜂群','奈米機器蟲','Nanoswarm'), snake:L('蛇吻','蛇咬毒液','Snake Bite'), wall:L('毒幕','毒雲瘴壁','Toxic Screen'),
   smoke:L('烟雾弹','煙霧彈','Smoke'), flash:L('闪光弹','閃光彈','Flash'), molly:L('燃烧瓶','燃燒瓶','Molotov'),
 };
 const UTIL_NAME={smoke:ABIL.smoke,flash:ABIL.flash,molly:ABIL.molly};

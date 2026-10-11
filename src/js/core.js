@@ -92,6 +92,7 @@ function normalize(d){
   const b=DEFAULT(); d=d&&typeof d==='object'?d:{};
   d.version=1; d.settings=Object.assign(b.settings,d.settings||{}); d.settings.watch=Object.assign({val:true,cs2:true},d.settings.watch||{});
   d.checkins=d.checkins||{}; d.matches=Array.isArray(d.matches)?d.matches:[]; d.goals=d.goals||{};
+  d.matches.forEach(m=>{if(!m.metricType)m.metricType=m.game==='cs2'?'adr':'acs';if(!m.health)m.health='unknown';});
   d.lineups=Object.assign(b.lineups,d.lineups||{});
   return d;
 }
@@ -99,7 +100,7 @@ const store={
   data:DEFAULT(),
   async load(){ this.data=normalize(await invoke('load_data')); return this.data; },
   // Always re-read before writing so several windows don't overwrite each other.
-  async update(fn){ await this.load(); fn(this.data); await invoke('save_data',{data:this.data}); return this.data; },
+  update(fn){const write=async()=>{await this.load();fn(this.data);await invoke('save_data',{data:this.data});return this.data;};this._queue=(this._queue||Promise.resolve()).catch(()=>{}).then(write);return this._queue;},
 };
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 

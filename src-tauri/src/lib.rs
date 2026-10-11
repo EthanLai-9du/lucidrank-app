@@ -7,6 +7,7 @@
 //! never capture the screen, never send input. All windows are normal, separate windows.
 
 mod updater;
+mod accounts;
 
 use std::{
     fs,
@@ -60,7 +61,7 @@ impl Default for Labels {
             quit: "Quit".into(),
             tooltip: "LucidRank".into(),
             notif_title: "Game on. Quick check-in?".into(),
-            notif_body: "8 taps, about 10 seconds.".into(),
+            notif_body: "Record health and your plan; uncertain fields can stay blank.".into(),
             tray_hint_title: "LucidRank is still running".into(),
             tray_hint_body: "It sits in the tray. Right-click the icon to quit.".into(),
         }
@@ -95,7 +96,12 @@ fn data_dir(app: &AppHandle) -> PathBuf {
     dir
 }
 fn data_file(app: &AppHandle) -> PathBuf {
-    data_dir(app).join("lucidrank-data.json")
+    let account = app.state::<accounts::AccountState>().active.lock().unwrap().clone();
+    if account.is_empty() { data_dir(app).join("lucidrank-data.json") } else {
+        let dir = data_dir(app).join("accounts");
+        let _ = fs::create_dir_all(&dir);
+        dir.join(format!("{account}.json"))
+    }
 }
 fn prompt_file(app: &AppHandle) -> PathBuf {
     data_dir(app).join("prompt-state.json")
@@ -180,8 +186,9 @@ fn open_checkin(app: &AppHandle, auto: bool) -> Result<Opened, String> {
     let page = test_hook("checkin.html")?;
     WebviewWindowBuilder::new(app, "checkin", WebviewUrl::App(page.into()))
         .title(format!("LucidRank · {title}"))
-        .inner_size(460.0, 700.0)
-        .resizable(false)
+        .inner_size(640.0, 760.0)
+        .min_inner_size(400.0, 500.0)
+        .resizable(true)
         .maximizable(false)
         .minimizable(true)
         .center()
@@ -343,6 +350,12 @@ fn load_data(app: AppHandle, state: tauri::State<AppState>) -> Value {
 }
 
 #[tauri::command]
+fn load_guest_data(app: AppHandle, state: tauri::State<AppState>) -> Value {
+ let _g=state.io.lock().unwrap();
+ read_json(&data_dir(&app).join("lucidrank-data.json"))
+}
+
+#[tauri::command]
 fn save_data(app: AppHandle, window: tauri::Window, state: tauri::State<AppState>, data: Value) -> Result<(), String> {
     {
         let _g = state.io.lock().unwrap();
@@ -372,7 +385,7 @@ fn delete_all_data(app: AppHandle, state: tauri::State<AppState>) -> Result<(), 
 }
 
 #[tauri::command]
-async fn export_data(app: AppHandle) -> Result<Option<String>, String> {
+async fn export_data(app: AppHandle, data: Option<Value>) -> Result<Option<String>, String> {
     let name = format!("lucidrank-export-{}.json", chrono::Local::now().format("%Y%m%d"));
     let picked = app
         .dialog()
@@ -382,11 +395,11 @@ async fn export_data(app: AppHandle) -> Result<Option<String>, String> {
         .blocking_save_file();
     let Some(fp) = picked else { return Ok(None) };
     let path = fp.into_path().map_err(|e| e.to_string())?;
-    let data = {
+    let data = data.unwrap_or_else(|| {
         let st = app.state::<AppState>();
         let _g = st.io.lock().unwrap();
         read_json(&data_file(&app))
-    };
+    });
     write_json(&path, &data)?;
     Ok(Some(path.to_string_lossy().to_string()))
 }
@@ -586,9 +599,15 @@ pub fn run() {
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_process::init())
         .manage(AppState::default())
+        .manage(accounts::AccountState::default())
         .manage(updater::UpdState::default())
         .invoke_handler(tauri::generate_handler![
+            accounts::account_request,
+            accounts::account_select,
+            accounts::account_meta,
+            accounts::open_website,
             load_data,
+            load_guest_data,
             save_data,
             data_location,
             delete_all_data,

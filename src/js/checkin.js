@@ -163,5 +163,5 @@ function boot(host,opts={}){
 
 window.LRCheckin={Q,summary,boot};
 // stand-alone pop-up window
-if(document.body&&document.body.classList.contains('ci-body')){ applyI18n(); boot($('#ciHost')); }
+// Standalone windows are initialized by health-checkin.js.
 })();

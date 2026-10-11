@@ -1,0 +1,1291 @@
+{
+  "version": 1,
+  "checkedAt": "2026-10-11",
+  "items": [
+    {
+      "id": "sova-ascent-giraffe",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Ascent",
+      "agent": "Sova",
+      "title": {
+        "sc": "B 主道长颈鹿侦察箭",
+        "tc": "B 主道長頸鹿偵察箭",
+        "en": "B Main giraffe recon"
+      },
+      "target": {
+        "sc": "B 包点",
+        "tc": "B 包點",
+        "en": "B site"
+      },
+      "ability": {
+        "sc": "寻敌箭",
+        "tc": "偵察箭",
+        "en": "Recon Bolt"
+      },
+      "side": "atk",
+      "scn": "exec",
+      "source": {
+        "url": "https://www.oneesports.gg/valorant/best-valorant-sova-lineups-ascent/",
+        "author": "ONE Esports / Steven Cropley",
+        "date": "2024-03-09"
+      },
+      "steps": [
+        {
+          "sc": "贴 B 主道入口最左侧。",
+          "tc": "貼 B 主道入口最左側。",
+          "en": "Stand at the left edge of B Main."
+        },
+        {
+          "sc": "瞄市场上方长颈鹿的眼睛。",
+          "tc": "瞄市場上方長頸鹿的眼睛。",
+          "en": "Aim at the giraffe eye above Market."
+        },
+        {
+          "sc": "满蓄力发射；瞄点见原文图。",
+          "tc": "滿蓄力發射；瞄點見原文圖。",
+          "en": "Fire at full charge; see source image."
+        }
+      ],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "",
+      "images": {}
+    },
+    {
+      "id": "sova-ascent-tree",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Ascent",
+      "agent": "Sova",
+      "title": {
+        "sc": "A 点探中路与小道",
+        "tc": "A 點探中路與小道",
+        "en": "A site recon to Mid / Short"
+      },
+      "target": {
+        "sc": "中路 / A 小道",
+        "tc": "中路 / A 小道",
+        "en": "Mid / A Short"
+      },
+      "ability": {
+        "sc": "寻敌箭",
+        "tc": "偵察箭",
+        "en": "Recon Bolt"
+      },
+      "side": "def",
+      "scn": "hold",
+      "source": {
+        "url": "https://www.oneesports.gg/valorant/best-valorant-sova-lineups-ascent/",
+        "author": "ONE Esports / Steven Cropley",
+        "date": "2024-03-09"
+      },
+      "steps": [
+        {
+          "sc": "贴 A 点绿色箱。",
+          "tc": "貼 A 點綠色箱。",
+          "en": "Stand beside the green A-site box."
+        },
+        {
+          "sc": "用无人机图标对齐箱边。",
+          "tc": "用無人機圖示對齊箱邊。",
+          "en": "Align the drone icon with the box edge."
+        },
+        {
+          "sc": "一格蓄力，一次反弹。",
+          "tc": "一格蓄力，一次反彈。",
+          "en": "Use one charge bar and one bounce."
+        }
+      ],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "",
+      "images": {}
+    },
+    {
+      "id": "sova-haven-a-lobby",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Haven",
+      "agent": "Sova",
+      "title": {
+        "sc": "A 点探 A 大厅",
+        "tc": "A 點探 A 大廳",
+        "en": "A site to A Lobby recon"
+      },
+      "target": {
+        "sc": "A 大厅入口",
+        "tc": "A 大廳入口",
+        "en": "A Lobby entrance"
+      },
+      "ability": {
+        "sc": "寻敌箭",
+        "tc": "偵察箭",
+        "en": "Recon Bolt"
+      },
+      "side": "def",
+      "scn": "hold",
+      "source": {
+        "url": "https://www.oneesports.gg/valorant/best-sova-recon-bolt-lineups-haven/",
+        "author": "ONE Esports / Nigel Zalamea",
+        "date": "2024-05-01"
+      },
+      "steps": [
+        {
+          "sc": "站 A 连接旁双层箱边。",
+          "tc": "站 A 連接旁雙層箱邊。",
+          "en": "Stand by stacked boxes near A Link."
+        },
+        {
+          "sc": "对照原文标记瞄树枝。",
+          "tc": "對照原文標記瞄樹枝。",
+          "en": "Aim at the branch shown in the source."
+        },
+        {
+          "sc": "两格蓄力，零反弹。",
+          "tc": "兩格蓄力，零反彈。",
+          "en": "Use two charge bars, no bounce."
+        }
+      ],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "",
+      "images": {}
+    },
+    {
+      "id": "sova-haven-c-long",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Haven",
+      "agent": "Sova",
+      "title": {
+        "sc": "C 点探 C 长道",
+        "tc": "C 點探 C 長道",
+        "en": "C site to C Long recon"
+      },
+      "target": {
+        "sc": "C 长道树枝",
+        "tc": "C 長道樹枝",
+        "en": "Tree above C Long"
+      },
+      "ability": {
+        "sc": "寻敌箭",
+        "tc": "偵察箭",
+        "en": "Recon Bolt"
+      },
+      "side": "def",
+      "scn": "hold",
+      "source": {
+        "url": "https://www.oneesports.gg/valorant/best-sova-recon-bolt-lineups-haven/",
+        "author": "ONE Esports / Nigel Zalamea",
+        "date": "2024-05-01"
+      },
+      "steps": [
+        {
+          "sc": "站 C 连接旁包点后方。",
+          "tc": "站 C 連接旁包點後方。",
+          "en": "Stand at back C site near C Link."
+        },
+        {
+          "sc": "对照原文瞄 C 长道树枝。",
+          "tc": "對照原文瞄 C 長道樹枝。",
+          "en": "Check the branch aim in the source."
+        },
+        {
+          "sc": "两格蓄力，零反弹。",
+          "tc": "兩格蓄力，零反彈。",
+          "en": "Use two charge bars, no bounce."
+        }
+      ],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "",
+      "images": {}
+    },
+    {
+      "id": "killjoy-ascent-a-box",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Ascent",
+      "agent": "Killjoy",
+      "title": {
+        "sc": "A 绿箱包位纳米蜂群",
+        "tc": "A 綠箱包位奈米機器蟲",
+        "en": "A green-box post-plant swarm"
+      },
+      "target": {
+        "sc": "A 绿箱前包位",
+        "tc": "A 綠箱前包位",
+        "en": "Plant in front of A green boxes"
+      },
+      "ability": {
+        "sc": "纳米蜂群",
+        "tc": "奈米機器蟲",
+        "en": "Nanoswarm"
+      },
+      "side": "atk",
+      "scn": "post",
+      "source": {
+        "url": "https://dignitas.gg/articles/the-ultimate-killjoy-ascent-guide-for-valorant",
+        "author": "Dignitas / Silly; Keeoh & Eevux",
+        "date": "2021-11-12"
+      },
+      "steps": [
+        {
+          "sc": "确认包在绿箱前。",
+          "tc": "確認包在綠箱前。",
+          "en": "Confirm the spike is in front of green boxes."
+        },
+        {
+          "sc": "贴辐能箱与墙的夹角。",
+          "tc": "貼輻能箱與牆的夾角。",
+          "en": "Stand in the Radiant-box / wall corner."
+        },
+        {
+          "sc": "瞄原文尖角标记投掷。",
+          "tc": "瞄原文尖角標記投擲。",
+          "en": "Aim at the marked spike tip and throw."
+        }
+      ],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "",
+      "images": {}
+    },
+    {
+      "id": "killjoy-ascent-b-box",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Ascent",
+      "agent": "Killjoy",
+      "title": {
+        "sc": "B 大厅绿箱包位投掷",
+        "tc": "B 大廳綠箱包位投擲",
+        "en": "B Lobby swarm to green boxes"
+      },
+      "target": {
+        "sc": "B 绿箱默认包位",
+        "tc": "B 綠箱預設包位",
+        "en": "B green-box default plant"
+      },
+      "ability": {
+        "sc": "纳米蜂群",
+        "tc": "奈米機器蟲",
+        "en": "Nanoswarm"
+      },
+      "side": "atk",
+      "scn": "post",
+      "source": {
+        "url": "https://dignitas.gg/articles/the-ultimate-killjoy-ascent-guide-for-valorant",
+        "author": "Dignitas / Silly; Keeoh & Eevux",
+        "date": "2021-11-12"
+      },
+      "steps": [
+        {
+          "sc": "确认包在 B 绿箱前。",
+          "tc": "確認包在 B 綠箱前。",
+          "en": "Confirm the spike is by B green boxes."
+        },
+        {
+          "sc": "贴原文 B 大厅角落。",
+          "tc": "貼原文 B 大廳角落。",
+          "en": "Stand in the illustrated B Lobby corner."
+        },
+        {
+          "sc": "瞄原文尖角标记投掷。",
+          "tc": "瞄原文尖角標記投擲。",
+          "en": "Aim at the marked spike tip and throw."
+        }
+      ],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "",
+      "images": {}
+    },
+    {
+      "id": "upforge-24",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Haven",
+      "agent": "Phoenix",
+      "title": {
+        "sc": "燃烧弹 C 长道 to 近点角落",
+        "tc": "燃燒彈 C 長道 to 近點角落",
+        "en": "Molly C Long to Close Pocket"
+      },
+      "target": {
+        "sc": "燃烧弹 C 长道 to 近点角落",
+        "tc": "燃燒彈 C 長道 to 近點角落",
+        "en": "Molly C Long to Close Pocket"
+      },
+      "ability": {
+        "sc": "燃烧弹",
+        "tc": "燃燒彈",
+        "en": "Hot Hands"
+      },
+      "side": "atk",
+      "scn": "exec",
+      "source": {
+        "url": "https://upforge.gg/lineups/24",
+        "author": "UpForge / crystalf1sh",
+        "date": ""
+      },
+      "steps": [],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "https://www.youtube.com/watch?v=uAh8jpsaf7g",
+      "images": {}
+    },
+    {
+      "id": "upforge-23",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Haven",
+      "agent": "Phoenix",
+      "title": {
+        "sc": "燃烧弹 C 回防 to 默认包位",
+        "tc": "燃燒彈 C 回防 to 默認包位",
+        "en": "Molly C Retake to Default"
+      },
+      "target": {
+        "sc": "燃烧弹 C 回防 to 默认包位",
+        "tc": "燃燒彈 C 回防 to 默認包位",
+        "en": "Molly C Retake to Default"
+      },
+      "ability": {
+        "sc": "燃烧弹",
+        "tc": "燃燒彈",
+        "en": "Hot Hands"
+      },
+      "side": "def",
+      "scn": "retake",
+      "source": {
+        "url": "https://upforge.gg/lineups/23",
+        "author": "UpForge / crystalf1sh",
+        "date": ""
+      },
+      "steps": [],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "https://www.youtube.com/watch?v=tl99mncCjug",
+      "images": {}
+    },
+    {
+      "id": "upforge-14",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Abyss",
+      "agent": "Sova",
+      "title": {
+        "sc": "A 主道 侦察箭",
+        "tc": "A 主道 偵察箭",
+        "en": "A Main Recon"
+      },
+      "target": {
+        "sc": "A 主道 侦察箭",
+        "tc": "A 主道 偵察箭",
+        "en": "A Main Recon"
+      },
+      "ability": {
+        "sc": "寻敌箭",
+        "tc": "偵察箭",
+        "en": "Recon Bolt"
+      },
+      "side": "def",
+      "scn": "hold",
+      "source": {
+        "url": "https://upforge.gg/lineups/14",
+        "author": "UpForge / astar",
+        "date": ""
+      },
+      "steps": [],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "https://www.youtube.com/watch?v=rq46UerNsa0",
+      "images": {}
+    },
+    {
+      "id": "upforge-25",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Haven",
+      "agent": "Phoenix",
+      "title": {
+        "sc": "闪光 车库 to 草堆",
+        "tc": "閃光 車庫 to 草堆",
+        "en": "Flash Garage to Haybale"
+      },
+      "target": {
+        "sc": "闪光 车库 to 草堆",
+        "tc": "閃光 車庫 to 草堆",
+        "en": "Flash Garage to Haybale"
+      },
+      "ability": {
+        "sc": "闪光",
+        "tc": "閃光",
+        "en": "Curveball"
+      },
+      "side": "def",
+      "scn": "hold",
+      "source": {
+        "url": "https://upforge.gg/lineups/25",
+        "author": "UpForge / crystalf1sh",
+        "date": ""
+      },
+      "steps": [],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "https://www.youtube.com/watch?v=Y2OASMFtcB0",
+      "images": {}
+    },
+    {
+      "id": "upforge-22",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Haven",
+      "agent": "Phoenix",
+      "title": {
+        "sc": "燃烧弹 A 回防 to 默认包位",
+        "tc": "燃燒彈 A 回防 to 默認包位",
+        "en": "Molly A Retake to Default"
+      },
+      "target": {
+        "sc": "燃烧弹 A 回防 to 默认包位",
+        "tc": "燃燒彈 A 回防 to 默認包位",
+        "en": "Molly A Retake to Default"
+      },
+      "ability": {
+        "sc": "燃烧弹",
+        "tc": "燃燒彈",
+        "en": "Hot Hands"
+      },
+      "side": "def",
+      "scn": "retake",
+      "source": {
+        "url": "https://upforge.gg/lineups/22",
+        "author": "UpForge / crystalf1sh",
+        "date": ""
+      },
+      "steps": [],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "https://www.youtube.com/watch?v=7JpuZ5i1rok",
+      "images": {}
+    },
+    {
+      "id": "upforge-19",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Summit",
+      "agent": "Yoru",
+      "title": {
+        "sc": "传送 A 主道 to 花园",
+        "tc": "傳送 A 主道 to 花園",
+        "en": "Gatecrash A Main to Garden"
+      },
+      "target": {
+        "sc": "传送 A 主道 to 花园",
+        "tc": "傳送 A 主道 to 花園",
+        "en": "Gatecrash A Main to Garden"
+      },
+      "ability": {
+        "sc": "传送",
+        "tc": "傳送",
+        "en": "Gatecrash"
+      },
+      "side": "atk",
+      "scn": "exec",
+      "source": {
+        "url": "https://upforge.gg/lineups/19",
+        "author": "UpForge / crystalf1sh",
+        "date": ""
+      },
+      "steps": [],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "https://www.youtube.com/watch?v=YUA8AizMfWU",
+      "images": {}
+    },
+    {
+      "id": "upforge-21",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Summit",
+      "agent": "Yoru",
+      "title": {
+        "sc": "传送 B 主道 to 包点后方",
+        "tc": "傳送 B 主道 to 包點後方",
+        "en": "Gatecrash B Main to Backsite"
+      },
+      "target": {
+        "sc": "传送 B 主道 to 包点后方",
+        "tc": "傳送 B 主道 to 包點後方",
+        "en": "Gatecrash B Main to Backsite"
+      },
+      "ability": {
+        "sc": "传送",
+        "tc": "傳送",
+        "en": "Gatecrash"
+      },
+      "side": "atk",
+      "scn": "exec",
+      "source": {
+        "url": "https://upforge.gg/lineups/21",
+        "author": "UpForge / crystalf1sh",
+        "date": ""
+      },
+      "steps": [],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "https://www.youtube.com/watch?v=zjs8umxzKsM",
+      "images": {}
+    },
+    {
+      "id": "upforge-20",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Summit",
+      "agent": "Yoru",
+      "title": {
+        "sc": "传送 B 主道 to 健身房",
+        "tc": "傳送 B 主道 to 健身房",
+        "en": "Gatecrash B Main to Gym"
+      },
+      "target": {
+        "sc": "传送 B 主道 to 健身房",
+        "tc": "傳送 B 主道 to 健身房",
+        "en": "Gatecrash B Main to Gym"
+      },
+      "ability": {
+        "sc": "传送",
+        "tc": "傳送",
+        "en": "Gatecrash"
+      },
+      "side": "atk",
+      "scn": "exec",
+      "source": {
+        "url": "https://upforge.gg/lineups/20",
+        "author": "UpForge / crystalf1sh",
+        "date": ""
+      },
+      "steps": [],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "https://www.youtube.com/watch?v=5NEwT0x8hIA",
+      "images": {}
+    },
+    {
+      "id": "upforge-13",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Abyss",
+      "agent": "Sova",
+      "title": {
+        "sc": "A 包点 侦察箭",
+        "tc": "A 包點 偵察箭",
+        "en": "A Site Recon"
+      },
+      "target": {
+        "sc": "A 包点 侦察箭",
+        "tc": "A 包點 偵察箭",
+        "en": "A Site Recon"
+      },
+      "ability": {
+        "sc": "寻敌箭",
+        "tc": "偵察箭",
+        "en": "Recon Bolt"
+      },
+      "side": "atk",
+      "scn": "exec",
+      "source": {
+        "url": "https://upforge.gg/lineups/13",
+        "author": "UpForge / astar",
+        "date": ""
+      },
+      "steps": [],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "https://www.youtube.com/watch?v=cGAiAIIvmT8",
+      "images": {}
+    },
+    {
+      "id": "upforge-12",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Abyss",
+      "agent": "Sova",
+      "title": {
+        "sc": "A 包点 侦察箭",
+        "tc": "A 包點 偵察箭",
+        "en": "A Site Recon"
+      },
+      "target": {
+        "sc": "A 包点 侦察箭",
+        "tc": "A 包點 偵察箭",
+        "en": "A Site Recon"
+      },
+      "ability": {
+        "sc": "寻敌箭",
+        "tc": "偵察箭",
+        "en": "Recon Bolt"
+      },
+      "side": "atk",
+      "scn": "exec",
+      "source": {
+        "url": "https://upforge.gg/lineups/12",
+        "author": "UpForge / astar",
+        "date": ""
+      },
+      "steps": [],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "https://www.youtube.com/watch?v=rE1Afk3iw18",
+      "images": {}
+    },
+    {
+      "id": "upforge-18",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Summit",
+      "agent": "Yoru",
+      "title": {
+        "sc": "传送 A 主道 to 洞穴",
+        "tc": "傳送 A 主道 to 洞穴",
+        "en": "Gatecrash A Main to Cave"
+      },
+      "target": {
+        "sc": "传送 A 主道 to 洞穴",
+        "tc": "傳送 A 主道 to 洞穴",
+        "en": "Gatecrash A Main to Cave"
+      },
+      "ability": {
+        "sc": "传送",
+        "tc": "傳送",
+        "en": "Gatecrash"
+      },
+      "side": "atk",
+      "scn": "exec",
+      "source": {
+        "url": "https://upforge.gg/lineups/18",
+        "author": "UpForge / crystalf1sh",
+        "date": ""
+      },
+      "steps": [],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "https://www.youtube.com/watch?v=cQ5k0I9BoG8",
+      "images": {}
+    },
+    {
+      "id": "upforge-17",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Summit",
+      "agent": "Yoru",
+      "title": {
+        "sc": "传送 A 主道 to 画室",
+        "tc": "傳送 A 主道 to 畫室",
+        "en": "Gatecrash A Main to Art"
+      },
+      "target": {
+        "sc": "传送 A 主道 to 画室",
+        "tc": "傳送 A 主道 to 畫室",
+        "en": "Gatecrash A Main to Art"
+      },
+      "ability": {
+        "sc": "传送",
+        "tc": "傳送",
+        "en": "Gatecrash"
+      },
+      "side": "atk",
+      "scn": "exec",
+      "source": {
+        "url": "https://upforge.gg/lineups/17",
+        "author": "UpForge / crystalf1sh",
+        "date": ""
+      },
+      "steps": [],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "https://www.youtube.com/watch?v=krTzeQuM7EM",
+      "images": {}
+    },
+    {
+      "id": "upforge-10",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Abyss",
+      "agent": "Sova",
+      "title": {
+        "sc": "B 包点 侦察箭",
+        "tc": "B 包點 偵察箭",
+        "en": "B Site Recon"
+      },
+      "target": {
+        "sc": "B 包点 侦察箭",
+        "tc": "B 包點 偵察箭",
+        "en": "B Site Recon"
+      },
+      "ability": {
+        "sc": "寻敌箭",
+        "tc": "偵察箭",
+        "en": "Recon Bolt"
+      },
+      "side": "atk",
+      "scn": "exec",
+      "source": {
+        "url": "https://upforge.gg/lineups/10",
+        "author": "UpForge / astar",
+        "date": ""
+      },
+      "steps": [],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "https://www.youtube.com/watch?v=Mdv6Fxj9YoE",
+      "images": {}
+    },
+    {
+      "id": "upforge-2",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Abyss",
+      "agent": "Brimstone",
+      "title": {
+        "sc": "A 包点 燃烧弹 (桥上包位)",
+        "tc": "A 包點 燃燒彈 (橋上包位)",
+        "en": "A Site Molly (Bridge)"
+      },
+      "target": {
+        "sc": "A 包点 燃烧弹 (桥上包位)",
+        "tc": "A 包點 燃燒彈 (橋上包位)",
+        "en": "A Site Molly (Bridge)"
+      },
+      "ability": {
+        "sc": "燃烧弹",
+        "tc": "燃燒彈",
+        "en": "Incendiary"
+      },
+      "side": "atk",
+      "scn": "post",
+      "source": {
+        "url": "https://upforge.gg/lineups/2",
+        "author": "UpForge / astar",
+        "date": ""
+      },
+      "steps": [],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "https://www.youtube.com/watch?v=8xQHSdhI-wM",
+      "images": {}
+    },
+    {
+      "id": "upforge-9",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Abyss",
+      "agent": "Sova",
+      "title": {
+        "sc": "B 包点 侦察箭",
+        "tc": "B 包點 偵察箭",
+        "en": "B Site Recon"
+      },
+      "target": {
+        "sc": "B 包点 侦察箭",
+        "tc": "B 包點 偵察箭",
+        "en": "B Site Recon"
+      },
+      "ability": {
+        "sc": "寻敌箭",
+        "tc": "偵察箭",
+        "en": "Recon Bolt"
+      },
+      "side": "atk",
+      "scn": "exec",
+      "source": {
+        "url": "https://upforge.gg/lineups/9",
+        "author": "UpForge / astar",
+        "date": ""
+      },
+      "steps": [],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "https://www.youtube.com/watch?v=qMJBrswmgjY",
+      "images": {}
+    },
+    {
+      "id": "upforge-11",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Abyss",
+      "agent": "Sova",
+      "title": {
+        "sc": "B 连接 侦察箭",
+        "tc": "B 連接 偵察箭",
+        "en": "B Link Recon"
+      },
+      "target": {
+        "sc": "B 连接 侦察箭",
+        "tc": "B 連接 偵察箭",
+        "en": "B Link Recon"
+      },
+      "ability": {
+        "sc": "寻敌箭",
+        "tc": "偵察箭",
+        "en": "Recon Bolt"
+      },
+      "side": "atk",
+      "scn": "exec",
+      "source": {
+        "url": "https://upforge.gg/lineups/11",
+        "author": "UpForge / astar",
+        "date": ""
+      },
+      "steps": [],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "https://www.youtube.com/watch?v=YnXVbuvs_kw",
+      "images": {}
+    },
+    {
+      "id": "upforge-8",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Abyss",
+      "agent": "Brimstone",
+      "title": {
+        "sc": "A 包点 燃烧弹 (默认包位)",
+        "tc": "A 包點 燃燒彈 (默認包位)",
+        "en": "A Site Molly (Default)"
+      },
+      "target": {
+        "sc": "A 包点 燃烧弹 (默认包位)",
+        "tc": "A 包點 燃燒彈 (默認包位)",
+        "en": "A Site Molly (Default)"
+      },
+      "ability": {
+        "sc": "燃烧弹",
+        "tc": "燃燒彈",
+        "en": "Incendiary"
+      },
+      "side": "atk",
+      "scn": "post",
+      "source": {
+        "url": "https://upforge.gg/lineups/8",
+        "author": "UpForge / astar",
+        "date": ""
+      },
+      "steps": [],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "https://www.youtube.com/watch?v=U-faBxmJ2pg",
+      "images": {}
+    },
+    {
+      "id": "upforge-3",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Abyss",
+      "agent": "Brimstone",
+      "title": {
+        "sc": "B 包点 燃烧弹 (凹角)",
+        "tc": "B 包點 燃燒彈 (凹角)",
+        "en": "B Site Molly (Cubby)"
+      },
+      "target": {
+        "sc": "B 包点 燃烧弹 (凹角)",
+        "tc": "B 包點 燃燒彈 (凹角)",
+        "en": "B Site Molly (Cubby)"
+      },
+      "ability": {
+        "sc": "燃烧弹",
+        "tc": "燃燒彈",
+        "en": "Incendiary"
+      },
+      "side": "atk",
+      "scn": "post",
+      "source": {
+        "url": "https://upforge.gg/lineups/3",
+        "author": "UpForge / astar",
+        "date": ""
+      },
+      "steps": [],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "https://www.youtube.com/watch?v=Nhvl23FoFOc",
+      "images": {}
+    },
+    {
+      "id": "upforge-7",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Abyss",
+      "agent": "Brimstone",
+      "title": {
+        "sc": "A 包点 燃烧弹 (默认包位)",
+        "tc": "A 包點 燃燒彈 (默認包位)",
+        "en": "A Site Molly (Default)"
+      },
+      "target": {
+        "sc": "A 包点 燃烧弹 (默认包位)",
+        "tc": "A 包點 燃燒彈 (默認包位)",
+        "en": "A Site Molly (Default)"
+      },
+      "ability": {
+        "sc": "燃烧弹",
+        "tc": "燃燒彈",
+        "en": "Incendiary"
+      },
+      "side": "atk",
+      "scn": "post",
+      "source": {
+        "url": "https://upforge.gg/lineups/7",
+        "author": "UpForge / astar",
+        "date": ""
+      },
+      "steps": [],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "https://www.youtube.com/watch?v=AKwLJWFRw9c",
+      "images": {}
+    },
+    {
+      "id": "upforge-15",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Abyss",
+      "agent": "Sova",
+      "title": {
+        "sc": "B 包点 侦察箭",
+        "tc": "B 包點 偵察箭",
+        "en": "B Site Recon"
+      },
+      "target": {
+        "sc": "B 包点 侦察箭",
+        "tc": "B 包點 偵察箭",
+        "en": "B Site Recon"
+      },
+      "ability": {
+        "sc": "寻敌箭",
+        "tc": "偵察箭",
+        "en": "Recon Bolt"
+      },
+      "side": "def",
+      "scn": "hold",
+      "source": {
+        "url": "https://upforge.gg/lineups/15",
+        "author": "UpForge / astar",
+        "date": ""
+      },
+      "steps": [],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "https://www.youtube.com/watch?v=Q-0ax-dPnqg",
+      "images": {}
+    },
+    {
+      "id": "upforge-4",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Abyss",
+      "agent": "Brimstone",
+      "title": {
+        "sc": "B 包点 燃烧弹 (默认包位)",
+        "tc": "B 包點 燃燒彈 (默認包位)",
+        "en": "B Site Molly (Default)"
+      },
+      "target": {
+        "sc": "B 包点 燃烧弹 (默认包位)",
+        "tc": "B 包點 燃燒彈 (默認包位)",
+        "en": "B Site Molly (Default)"
+      },
+      "ability": {
+        "sc": "燃烧弹",
+        "tc": "燃燒彈",
+        "en": "Incendiary"
+      },
+      "side": "atk",
+      "scn": "post",
+      "source": {
+        "url": "https://upforge.gg/lineups/4",
+        "author": "UpForge / astar",
+        "date": ""
+      },
+      "steps": [],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "https://www.youtube.com/watch?v=SR46g06yODU",
+      "images": {}
+    },
+    {
+      "id": "upforge-6",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Abyss",
+      "agent": "Brimstone",
+      "title": {
+        "sc": "A 包点 燃烧弹 (桥上包位)",
+        "tc": "A 包點 燃燒彈 (橋上包位)",
+        "en": "A Site Molly (Bridge)"
+      },
+      "target": {
+        "sc": "A 包点 燃烧弹 (桥上包位)",
+        "tc": "A 包點 燃燒彈 (橋上包位)",
+        "en": "A Site Molly (Bridge)"
+      },
+      "ability": {
+        "sc": "燃烧弹",
+        "tc": "燃燒彈",
+        "en": "Incendiary"
+      },
+      "side": "atk",
+      "scn": "post",
+      "source": {
+        "url": "https://upforge.gg/lineups/6",
+        "author": "UpForge / astar",
+        "date": ""
+      },
+      "steps": [],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "https://www.youtube.com/watch?v=68WmYekjm0k",
+      "images": {}
+    },
+    {
+      "id": "upforge-5",
+      "kind": "tutorial",
+      "visible": true,
+      "map": "Abyss",
+      "agent": "Brimstone",
+      "title": {
+        "sc": "B 包点 燃烧弹 (箱子包位)",
+        "tc": "B 包點 燃燒彈 (箱子包位)",
+        "en": "B Site Molly (Boxes)"
+      },
+      "target": {
+        "sc": "B 包点 燃烧弹 (箱子包位)",
+        "tc": "B 包點 燃燒彈 (箱子包位)",
+        "en": "B Site Molly (Boxes)"
+      },
+      "ability": {
+        "sc": "燃烧弹",
+        "tc": "燃燒彈",
+        "en": "Incendiary"
+      },
+      "side": "atk",
+      "scn": "post",
+      "source": {
+        "url": "https://upforge.gg/lineups/5",
+        "author": "UpForge / astar",
+        "date": ""
+      },
+      "steps": [],
+      "notes": {
+        "sc": "先在自定义房间核对站位、瞄点和效果。来源未注明当前补丁，尚未实测。",
+        "tc": "先在自訂房間核對站位、瞄點及效果。來源未註明目前版本，尚未實測。",
+        "en": "Check positioning, aim and outcome in a custom match first. Current patch compatibility has not been tested."
+      },
+      "verification": "source",
+      "patch": "",
+      "testedAt": "",
+      "testedBy": "",
+      "videoURL": "https://www.youtube.com/watch?v=lr0PldMVCxs",
+      "images": {}
+    }
+  ]
+}

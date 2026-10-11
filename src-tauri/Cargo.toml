@@ -1,6 +1,6 @@
 [package]
 name = "lucidrank"
-version = "0.1.2"
+version = "0.1.6"
 description = "LucidRank: daily check-in + match log for VALORANT / CS2 players"
 authors = ["EthanLai-9du"]
 edition = "2021"
@@ -13,6 +13,7 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 tauri-build = { version = "2", features = [] }
 
 [dependencies]
+reqwest = { version = "0.12", default-features = false, features = ["json", "cookies", "rustls-tls"] }
 tauri = { version = "2", features = ["tray-icon", "image-png"] }
 tauri-plugin-autostart = "2"
 tauri-plugin-notification = "2"

@@ -1,0 +1,6 @@
+{
+  "tesseract.js": "7.0.0",
+  "tesseract.js-core": "7.0.0",
+  "languages": "https://github.com/tesseract-ocr/tessdata_fast",
+  "licenses": "Apache-2.0"
+}

@@ -1,7 +1,7 @@
 {
   "name": "lucidrank-app",
   "private": true,
-  "version": "0.1.2",
+  "version": "0.1.6",
   "description": "LucidRank desktop prototype (Tauri v2)",
   "scripts": {
     "tauri": "tauri",

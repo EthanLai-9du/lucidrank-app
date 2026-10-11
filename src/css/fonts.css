@@ -1,0 +1,13 @@
+/* Self-hosted OFL fonts, subset to application glyphs. User text has system fallbacks. */
+@font-face{font-family:'LR Title Han';src:url('../fonts/title-han.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;unicode-range:U+3000-9FFF,U+FF00-FFEF}
+@font-face{font-family:'LR Condensed';src:url('../fonts/display.woff2') format('woff2');font-weight:800;font-style:normal;font-display:swap}
+@font-face{font-family:'LR Space';src:url('../fonts/space.woff2') format('woff2');font-weight:300 700;font-style:normal;font-display:swap}
+@font-face{font-family:'LR Han SC';src:url('../fonts/han-sc.woff2') format('woff2');font-weight:100 900;font-style:normal;font-display:swap;unicode-range:U+3000-9FFF,U+FF00-FFEF}
+@font-face{font-family:'LR Han TC';src:url('../fonts/han-tc.woff2') format('woff2');font-weight:100 900;font-style:normal;font-display:swap;unicode-range:U+3000-9FFF,U+FF00-FFEF}
+:root{--cjk:'PingFang SC','Microsoft YaHei','LR Han SC','Noto Sans CJK SC',sans-serif}
+html[data-lang=tc]{--cjk:'PingFang TC','PingFang HK','Microsoft JhengHei','LR Han TC','Noto Sans CJK TC',sans-serif}
+
+@font-face{font-family:'LR Smiley';src:url('../fonts/smiley-han.woff2') format('woff2');font-weight:400 900;font-style:normal;font-display:swap;unicode-range:U+3000-9FFF,U+FF00-FFEF}
+@font-face{font-family:'LR Oxanium';src:url('../fonts/oxanium.woff2') format('woff2');font-weight:200 800;font-style:normal;font-display:swap}
+:root{--title-cjk:'LR Han SC',var(--cjk)}
+html[data-lang=tc]{--title-cjk:'LR Han TC',var(--cjk)}

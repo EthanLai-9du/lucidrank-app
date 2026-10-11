@@ -32,6 +32,9 @@ jobs:
       - name: Install JS deps (Tauri CLI only)
         run: npm ci
 
+      - name: Test native storage and account routing
+        run: cargo test --manifest-path src-tauri/Cargo.toml --lib
+
       - name: Build NSIS + MSI (+ signed updater artifacts) and publish release v<version from tauri.conf.json>
         uses: tauri-apps/tauri-action@v1
         env:
@@ -45,7 +48,8 @@ jobs:
           releaseBody: |
             LucidRank Windows 桌面版（原型，安装包未做代码签名）。
             下载下面的 `LucidRank_*_x64-setup.exe` 安装即可（覆盖安装旧版本，数据会保留）。SmartScreen 提示时点「更多信息」→「仍要运行」。
-            从 v0.1.2 开始应用内可以直接更新（设置 → 更新）；v0.1.1 及更早的版本需要手动装一次 v0.1.2。
+            全新界面与 Logo，完整特工与点位教学、战斗表现评分、详细对局和健康记录；支持账号云端同步与三种语言。
+            从 v0.1.2 开始应用内可以直接更新（设置 → 更新）；更早的版本需手动安装。
             安全：只检查进程列表里游戏是否在运行；不读写游戏内存、不注入、不做覆盖层、不截屏、不模拟输入。
           releaseDraft: false
           # full releases (not pre-releases) so .../releases/latest/download/latest.json resolves for the updater
@@ -70,6 +74,7 @@ jobs:
         with:
           name: LucidRank-windows-installers
           path: |
+            src-tauri/Cargo.lock
             src-tauri/target/release/bundle/nsis/*.exe
             src-tauri/target/release/bundle/nsis/*.sig
             src-tauri/target/release/bundle/msi/*.msi
