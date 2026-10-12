@@ -9,7 +9,7 @@
    Must load before core.js. */
 (function(){
 'use strict';
-const VERSION='0.1.6';
+const VERSION='0.1.7';
 const native=window.__TAURI__,nativeInvoke=native.core.invoke.bind(native.core);
 let selected=Promise.resolve();
 const DB_NAME='lucidrank', DATA_KEY='data', SHOT_PREFIX='lrshot:';

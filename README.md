@@ -1,4 +1,4 @@
-# LucidRank Windows v0.1.6
+# LucidRank Windows v0.1.7
 
 记录身体状态、个人计划与 VALORANT / CS2 对局，查看个人数据中的关联，并收藏、练习点位教学。
 
