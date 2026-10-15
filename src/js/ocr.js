@@ -27,7 +27,8 @@ function detectMetric(text){
 
 function parseResult(text){
   if(/VICTORY|胜利|勝利|获胜|獲勝|\bWIN\b/i.test(text)) return 'W';
-  if(/DEFEAT|战败|戰敗|失败|失敗|\bLOSS\b/i.test(text)) return 'L';
+  // CN client uses 败北; keep 战败/失败 as fallbacks
+  if(/DEFEAT|败北|敗北|战败|戰敗|失败|失敗|\bLOSS\b/i.test(text)) return 'L';
   if(/DRAW|平局|平手|TIE/i.test(text)) return 'D';
   return null;
 }
@@ -40,14 +41,18 @@ function parseMap(text,game){
     const esc=id.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
     if(new RegExp('\\b'+esc+'\\b','i').test(text)) return id;
   }
-  // Localized SC/TC/EN labels embedded in OCR text (substring)
+  // Localized SC/TC/EN labels embedded in OCR text (substring) — longest first
+  const aliasHits=[];
   for(const id of ranked){
     const aliases=(LRCatalog.mapAliases?LRCatalog.mapAliases(id):[id,LRCatalog.mapName(id)]);
     for(const label of aliases){
-      if(label&&String(label).length>=2&&text.includes(label)) return id;
+      if(label&&String(label).length>=2&&text.includes(label)) aliasHits.push({id,len:String(label).length});
     }
   }
-  // Exact line / token via catalog resolver
+  if(aliasHits.length){
+    aliasHits.sort((a,b)=>b.len-a.len);
+    return aliasHits[0].id;
+  }
   for(const part of text.split(/[\n\r|,，/]/).map(x=>x.trim()).filter(Boolean)){
     const hit=LRCatalog.resolveMap(part);
     if(hit&&pool.includes(hit)) return hit;
@@ -55,35 +60,220 @@ function parseMap(text,game){
   return null;
 }
 
-function parseAgent(text){
+function stripMapAliases(text,game){
+  if(!window.LRCatalog) return text;
+  let cleaned=String(text);
+  const pool=LRCatalog.maps[game]||LRCatalog.maps.val||[];
+  const labels=[];
+  for(const id of pool){
+    const aliases=(LRCatalog.mapAliases?LRCatalog.mapAliases(id):[id]);
+    for(const a of aliases){ if(a&&String(a).length>=2) labels.push(String(a)); }
+  }
+  labels.sort((a,b)=>b.length-a.length);
+  for(const lab of labels){
+    if(cleaned.includes(lab)) cleaned=cleaned.split(lab).join(' ');
+  }
+  return cleaned;
+}
+
+function lineHasLocalMarker(line){
+  return /(?:\bYOU\b|自己|本方|▶|►|★|◆)/i.test(line);
+}
+
+function plausibleKda(k,d,a){
+  return Number.isFinite(k)&&Number.isFinite(d)&&Number.isFinite(a)
+    &&k>=0&&d>=0&&a>=0&&k<=60&&d<=50&&a<=50;
+}
+
+function plausibleScore(score){
+  return Number.isFinite(score)&&score>=20&&score<=500;
+}
+
+/** Collect bare scoreboard rows: optional combat score then K/D/A. */
+function collectScoreboardRows(text){
+  const rows=[];
+  const lines=String(text).split(/\r?\n/);
+  for(let li=0;li<lines.length;li++){
+    const line=lines[li];
+    // "Mint 80 6/16/5" / "400 28/17/5" — score immediately before K/D/A
+    const withScore=line.match(/(\d{2,3})\s+(\d{1,2})\s*[/|]\s*(\d{1,2})\s*[/|]\s*(\d{1,2})/g);
+    if(withScore){
+      for(const chunk of withScore){
+        const m=chunk.match(/(\d{2,3})\s+(\d{1,2})\s*[/|]\s*(\d{1,2})\s*[/|]\s*(\d{1,2})/);
+        if(!m) continue;
+        const score=+m[1],k=+m[2],d=+m[3],a=+m[4];
+        if(!plausibleScore(score)||!plausibleKda(k,d,a)) continue;
+        let weight=2;
+        if(lineHasLocalMarker(line)) weight+=5;
+        rows.push({k,d,a,score,weight,line,li});
+      }
+      continue;
+    }
+    // Bare "30/16/2" on a line (CN scoreboard often has no K/D/A label)
+    const bare=line.match(/(\d{1,2})\s*[/|]\s*(\d{1,2})\s*[/|]\s*(\d{1,2})/g);
+    if(!bare) continue;
+    // Score often sits on the previous OCR line: "player 474" then "30/16/2"
+    let prevScore=null;
+    if(li>0){
+      const pm=lines[li-1].match(/(?:^|\s)(\d{2,3})\s*$/);
+      if(pm&&plausibleScore(+pm[1])) prevScore=+pm[1];
+    }
+    for(const chunk of bare){
+      const m=chunk.match(/(\d{1,2})\s*[/|]\s*(\d{1,2})\s*[/|]\s*(\d{1,2})/);
+      if(!m) continue;
+      const k=+m[1],d=+m[2],a=+m[3];
+      if(!plausibleKda(k,d,a)) continue;
+      if(k+d+a===0) continue;
+      let weight=1;
+      if(lineHasLocalMarker(line)) weight+=5;
+      if(prevScore!=null) weight+=1;
+      rows.push({k,d,a,score:prevScore,weight,line,li});
+    }
+  }
+  // Whole-text fallback when OCR collapsed newlines ("… 30/16/2 …")
+  if(!rows.length){
+    const re=/(\d{2,3})\s+(\d{1,2})\s*[/|]\s*(\d{1,2})\s*[/|]\s*(\d{1,2})/g;
+    let m;
+    while((m=re.exec(text))){
+      const score=+m[1],k=+m[2],d=+m[3],a=+m[4];
+      if(!plausibleScore(score)||!plausibleKda(k,d,a)) continue;
+      rows.push({k,d,a,score,weight:2,line:m[0],li:-1});
+    }
+  }
+  if(!rows.length){
+    const re=/(\d{1,2})\s*[/|]\s*(\d{1,2})\s*[/|]\s*(\d{1,2})/g;
+    let m;
+    while((m=re.exec(text))){
+      const k=+m[1],d=+m[2],a=+m[3];
+      if(!plausibleKda(k,d,a)||k+d+a===0) continue;
+      rows.push({k,d,a,score:null,weight:1,line:m[0],li:-1});
+    }
+  }
+  return rows;
+}
+
+function pickScoreboardRow(rows,agentHintText){
+  if(!rows.length) return null;
+  // Boost rows that mention an agent name (local row often shows agent)
+  if(window.LRCatalog&&agentHintText){
+    for(const row of rows){
+      const hit=matchAgentIn(row.line, agentHintText, {requireNearNumbers:false, shortOk:true});
+      if(hit) row.weight+=3;
+    }
+  }
+  rows.sort((a,b)=>b.weight-a.weight||(b.score!=null)-(a.score!=null));
+  // If many equal-weight bare rows (full board), prefer ones with a score attached
+  const top=rows[0].weight;
+  const best=rows.filter(r=>r.weight===top);
+  if(best.length===1) return best[0];
+  const withScore=best.filter(r=>r.score!=null);
+  if(withScore.length===1) return withScore[0];
+  if(withScore.length>1) return withScore[0];
+  // Few rows (cropped) → first; many rows without markers → still first plausible
+  return best[0];
+}
+
+function matchAgentIn(scope,fullText,opts){
   if(!window.LRCatalog) return null;
+  const shortOk=opts&&opts.shortOk;
   const list=LRCatalog.agents.slice().sort((a,b)=>b.length-a.length);
+
   for(const id of list){
     const esc=id.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-    if(new RegExp('\\b'+esc+'\\b','i').test(text)) return id;
+    const re=new RegExp('\\b'+esc+'\\b','i');
+    if(!re.test(scope)) continue;
+    // Short EN names (Omen, Iso, …) are easy false positives in noisy OCR.
+    // Accept only when the matching line looks like a scoreboard/agent row —
+    // not UI tip chrome like "Omen tip card ignored".
+    if(id.length<=4){
+      const ok=scope.split(/\r?\n/).some(line=>{
+        if(!re.test(line)) return false;
+        if(lineHasLocalMarker(line)||/\d\s*[/|]\s*\d/.test(line)) return true;
+        if(/[\u4e00-\u9fff]/.test(line)) return true; // e.g. "雷兹 Raze"
+        const rest=line.replace(re,' ').replace(/[^\w\u4e00-\u9fff]+/g,' ').trim();
+        return !rest; // lone agent token line
+      });
+      if(!ok) continue;
+    }
+    return id;
   }
+
+  // CN/TC aliases — longest label first; scope should already have map aliases stripped
+  const aliasHits=[];
   for(const id of list){
     const aliases=(LRCatalog.agentAliases?LRCatalog.agentAliases(id):[id,LRCatalog.agentName(id)]);
     for(const label of aliases){
-      if(label&&String(label).length>=2&&text.includes(label)) return id;
+      if(!label||String(label).length<2) continue;
+      if(label===id) continue; // already handled via word-boundary above
+      if(scope.includes(label)) aliasHits.push({id,len:String(label).length,label:String(label)});
     }
   }
-  for(const part of text.split(/[\n\r|,，]/).map(x=>x.trim()).filter(Boolean)){
+  if(aliasHits.length){
+    aliasHits.sort((a,b)=>b.len-a.len);
+    return aliasHits[0].id;
+  }
+
+  for(const part of scope.split(/[\n\r|,，]/).map(x=>x.trim()).filter(Boolean)){
+    if(part.length<2||part.length>24) continue;
     const hit=LRCatalog.resolveAgent(part);
-    if(hit&&LRCatalog.agents.includes(hit)) return hit;
+    if(hit&&LRCatalog.agents.includes(hit)){
+      if(hit.length<=4&&!shortOk){ const ok=scope.split(/\r?\n/).some(line=>line.includes(part)&&(lineHasLocalMarker(line)||/\d\s*[/|]\s*\d/.test(line))); if(!ok) continue; }
+      return hit;
+    }
   }
   return null;
 }
 
+function parseAgent(text,game,hintLine,hintLi){
+  if(!window.LRCatalog) return null;
+  const g=game||'val';
+  const cleaned=stripMapAliases(text,g);
+  const lines=cleaned.split(/\r?\n/);
+  // Prefer a window around the picked scoreboard row (agent name often sits on an adjacent line)
+  if(hintLine||(hintLi!=null&&hintLi>=0)){
+    const chunks=[];
+    if(hintLi!=null&&hintLi>=0){
+      for(let i=Math.max(0,hintLi-2);i<=Math.min(lines.length-1,hintLi+2);i++) chunks.push(lines[i]);
+    }
+    if(hintLine) chunks.unshift(stripMapAliases(hintLine,g));
+    const nearScope=chunks.join('\n');
+    const near=matchAgentIn(nearScope, cleaned, {shortOk:true});
+    if(near) return near;
+  }
+  // Lines that already carry K/D/A-like numbers (or local marker)
+  for(const line of lines){
+    if(!/\d\s*[/|]\s*\d/.test(line)&&!lineHasLocalMarker(line)) continue;
+    const hit=matchAgentIn(line, cleaned, {shortOk:true});
+    if(hit) return hit;
+  }
+  // CN aliases / longer EN names anywhere (short EN still need a numeric neighbour line)
+  return matchAgentIn(cleaned, cleaned, {shortOk:false});
+}
+
 function suggestions(text,game){
   const out={};
-  const kda=text.match(/\bK\s*[/|]\s*D\s*[/|]\s*A\s*[:：]?\s*(\d{1,2})\s*[/|]\s*(\d{1,2})\s*[/|]\s*(\d{1,2})\b/i);
+  const g=game||'val';
+  const raw=String(text||'');
+
+  // 1) Labeled K/D/A (English / explicit headers)
+  const kda=raw.match(/\bK\s*[/|]\s*D\s*[/|]\s*A\s*[:：]?\s*(\d{1,2})\s*[/|]\s*(\d{1,2})\s*[/|]\s*(\d{1,2})\b/i);
   if(kda)[out.k,out.d,out.a]=kda.slice(1).map(Number);
-  // Compact patterns like 12/8/3 near KDA header
   if(out.k==null){
-    const compact=text.match(/(?:K\s*[/|]\s*D\s*[/|]\s*A|KDA|击杀|擊殺)[^\d]{0,12}(\d{1,2})\s*[/|]\s*(\d{1,2})\s*[/|]\s*(\d{1,2})/i);
+    const compact=raw.match(/(?:K\s*[/|]\s*D\s*[/|]\s*A|KDA|击杀|擊殺)[^\d]{0,12}(\d{1,2})\s*[/|]\s*(\d{1,2})\s*[/|]\s*(\d{1,2})/i);
     if(compact)[out.k,out.d,out.a]=compact.slice(1).map(Number);
   }
+
+  // 2) Bare CN scoreboard rows: "30/16/2" or "Mint 80 6/16/5"
+  let picked=null;
+  if(out.k==null||out.score==null){
+    const rows=collectScoreboardRows(raw);
+    picked=pickScoreboardRow(rows, raw);
+    if(picked){
+      if(out.k==null){ out.k=picked.k; out.d=picked.d; out.a=picked.a; }
+      if(out.score==null&&picked.score!=null) out.score=picked.score;
+    }
+  }
+
   const fields={
     k:/(?:\bKills?\b|击杀|擊殺)\s*[:：]\s*(\d{1,2})/i,
     d:/(?:\bDeaths?\b|死亡)\s*[:：]\s*(\d{1,2})/i,
@@ -91,20 +281,21 @@ function suggestions(text,game){
     score:/(?:Performance\s*Score|表現分數|戰鬥表現評分|戰鬥表現分|战斗表现评分|战斗表现分|表现分数|\bACS\b|\bADR\b)\s*[:：]?\s*(\d{1,3}(?:\.\d+)?)/i,
     hs:/(?:Headshot\s*%?|爆头率|爆頭率|\bHS%)\s*[:：]?\s*(\d{1,3}(?:\.\d+)?)/i
   };
-  const metric=detectMetric(text);
+  const metric=detectMetric(raw);
   if(metric==='performanceScore') fields.score=/(?:Performance\s*Score|表現分數|戰鬥表現評分|戰鬥表現分|战斗表现评分|战斗表现分|表现分数)\s*[:：]?\s*(\d{1,3}(?:\.\d+)?)/i;
   else if(metric==='acs') fields.score=/\bACS\b\s*[:：]?\s*(\d{1,3}(?:\.\d+)?)/i;
   else if(metric==='adr') fields.score=/\bADR\b\s*[:：]?\s*(\d{1,3}(?:\.\d+)?)/i;
   for(const [k,re] of Object.entries(fields)){
     if(out[k]!=null) continue;
-    const m=text.match(re);
+    const m=raw.match(re);
     if(m) out[k]=Number(m[1]);
   }
-  const result=parseResult(text);
+
+  const result=parseResult(raw);
   if(result) out.result=result;
-  const map=parseMap(text,game||'val');
+  const map=parseMap(raw,g);
   if(map) out.map=map;
-  const agent=parseAgent(text);
+  const agent=parseAgent(raw,g, picked&&picked.line, picked&&picked.li);
   if(agent) out.agent=agent;
   return out;
 }
