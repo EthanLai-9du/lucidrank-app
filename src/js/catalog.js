@@ -9,6 +9,8 @@ const agents=["Astra", "Breach", "Brimstone", "Chamber", "Clove", "Cypher", "Dea
 const agentRoles={"Gekko": "initiator", "Fade": "initiator", "Breach": "initiator", "Deadlock": "sentinel", "Tejo": "initiator", "Raze": "duelist", "Chamber": "sentinel", "KAY/O": "initiator", "Skye": "initiator", "Cypher": "sentinel", "Sova": "initiator", "Miks": "controller", "Killjoy": "sentinel", "Harbor": "controller", "Vyse": "sentinel", "Viper": "controller", "Phoenix": "duelist", "Veto": "sentinel", "Astra": "controller", "Brimstone": "controller", "Iso": "duelist", "Clove": "controller", "Neon": "duelist", "Yoru": "duelist", "Waylay": "duelist", "Sage": "sentinel", "Reyna": "duelist", "Omen": "controller", "Jett": "duelist"};
 function mapName(id){ const n=names[id]; return n?(LR.lang==='en'?id:n[LR.lang==='tc'?1:0]):id; }
 function agentName(id){const n=agentNames[id];return n?(LR.lang==='en'?id:n[LR.lang==='tc'?1:0]):id;}
+function mapAliases(id){const n=names[id]||[];return [id,...n];}
+function agentAliases(id){const n=agentNames[id]||[];return [id,...n];}
 function roleFor(agent){return agentRoles[agent]||'';}
 function metricType(m){return typeof m.metricType==='string'?m.metricType:(m.game==='cs2'?'adr':'acs');}
 function metricLabel(m){const k=typeof m==='string'?(m==='cs2'?'adr':'performanceScore'):metricType(m);return k==='performanceScore'?LR.raw('m.ps'):k==='trackerScore'?'Tracker Score':['acs','adr'].includes(k)?k.toUpperCase():LR.raw('m.unknown');}
@@ -18,5 +20,5 @@ function derived(m){
 }
 function resolveMap(value){return Object.keys(names).find(id=>id.toLowerCase()===value.toLowerCase()||names[id].includes(value))||value;}
 function resolveAgent(value){return agents.find(id=>id.toLowerCase()===value.toLowerCase()||agentNames[id].includes(value))||value;}
-window.LRCatalog={resolveMap,resolveAgent,maps,agents,mapName,agentName,roleFor,metricType,metricLabel,derived};
+window.LRCatalog={resolveMap,resolveAgent,maps,agents,mapName,agentName,mapAliases,agentAliases,roleFor,metricType,metricLabel,derived};
 })();
