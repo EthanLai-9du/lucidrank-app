@@ -111,7 +111,7 @@ function logForm(){
       ${g==='val'?numberField('trackerScore','m.tracker',0,1000):''}
       ${fieldSelect('source',['manual','screenshot','external'].map(x=>[x,t('m.'+x)]),'m.source','manual')}
     </div><p class="muted xs">${t('m.acsHint')}</p></details>
-    <div class="shotrow"><button type="button" class="btn ghost sm" data-open-ocr>${t('ocr.start')}</button><button type="button" class="btn ghost sm" id="shotBtn">${form.shot?esc(t('m.shotOn',{f:form.shot.split(/[\\/]/).pop()})):t('m.shot')}</button></div>
+    <div class="shotrow"><button type="button" class="btn ghost sm" data-open-ocr>${t('ocr.start')}</button><span class="muted xs" data-ocr-crop-hint>${t('ocr.hintCropRow')}</span><button type="button" class="btn ghost sm" id="shotBtn">${form.shot?esc(t('m.shotOn',{f:form.shot.split(/[\\/]/).pop()})):t('m.shot')}</button></div>
     <p class="muted xs">${t('m.ocrP')}</p>
     <div class="row between"><span class="formmsg" id="formMsg"></span><button class="btn primary" type="submit">${t('m.save')}</button></div>
   </form>`;
