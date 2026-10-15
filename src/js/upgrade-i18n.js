@@ -442,9 +442,9 @@ Object.assign(I18N,{
     "en": "Match context · reuse last match, expand to edit"
   },
   "m.ocrP": {
-    "sc": "手填或从截图带入；空白数据不会当作零。",
-    "tc": "手填或從截圖帶入；空白數據不會當作零。",
-    "en": "Type or import from a screenshot. Missing values are never zero."
+    "sc": "能辨就辨，认不全就手填；空白不会当作零。",
+    "tc": "能辨就辨，認不全就手填；空白不會當作零。",
+    "en": "Auto-read when it can; otherwise type it in. Missing values are never zero."
   },
   "ocr.start": {
     "sc": "截图辨识",
@@ -477,19 +477,19 @@ Object.assign(I18N,{
     "en": "Processed on this device. Drag over your own stats. Leave uncertain values empty; only confirmed values are applied."
   },
   "ocr.busy": {
-    "sc": "正在本机辨识…",
-    "tc": "正在本機辨識…",
-    "en": "Reading on this device…"
+    "sc": "正在认结算页…",
+    "tc": "正在認結算頁…",
+    "en": "Reading scoreboard…"
   },
   "ocr.none": {
-    "sc": "未找到明确的标签。请根据辨识文字核对并填写，不会猜测列位置。",
-    "tc": "未找到明確標籤。請根據辨識文字核對並填寫，不會猜測欄位位置。",
-    "en": "No clear labels found. Check the recognized text and enter values; column positions are not guessed."
+    "sc": "没认全，请补一下，大约 30 秒",
+    "tc": "沒認全，請補一下，大約 30 秒",
+    "en": "Couldn't read everything — fill in the rest, about 30 seconds."
   },
   "ocr.fail": {
-    "sc": "辨识失败，可手动记录或换一张截图。",
-    "tc": "辨識失敗，可手動記錄或換一張截圖。",
-    "en": "Could not read this image. Type values or try another screenshot."
+    "sc": "没认全，请补一下，大约 30 秒",
+    "tc": "沒認全，請補一下，大約 30 秒",
+    "en": "Couldn't read everything — fill in the rest, about 30 seconds."
   },
   "ocr.confidence": {
     "sc": "辨识置信度 {n}%（不是数值正确的保证）",
@@ -500,6 +500,16 @@ Object.assign(I18N,{
     "sc": "辨识文字",
     "tc": "辨識文字",
     "en": "Recognized text"
+  },
+  "ocr.partial": {
+    "sc": "没认全，请补一下，大约 30 秒",
+    "tc": "沒認全，請補一下，大約 30 秒",
+    "en": "Couldn't read everything — fill in the rest, about 30 seconds."
+  },
+  "ocr.verify": {
+    "sc": "请核对本项",
+    "tc": "請核對本項",
+    "en": "Please verify this field"
   }
 });
 
