@@ -510,6 +510,11 @@ Object.assign(I18N,{
     "sc": "请核对本项",
     "tc": "請核對本項",
     "en": "Please verify this field"
+  },
+  "ocr.hintCropRow": {
+    "sc": "尽量只框自己那一行",
+    "tc": "盡量只框自己那一行",
+    "en": "Crop just your own row"
   }
 });
 
