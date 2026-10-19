@@ -42,7 +42,7 @@ function checkinSteps(f){
  const indicator=document.createElement('p');indicator.className='checkin-position';indicator.setAttribute('aria-live','polite');
  const save=f.querySelector('[type=submit]'),close=f.querySelector('.hc-close'),error=f.querySelector('.hc-error');
  foot.append(prev,next,save,close);f.prepend(nav,indicator,...panels);f.append(error,foot);let current=0;
- function show(i,focus=false){current=i;panels.forEach((p,j)=>p.hidden=j!==i);nav.querySelectorAll('button').forEach((b,j)=>{if(j===i)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');});prev.hidden=i===0;next.hidden=i===2;save.hidden=i!==2;indicator.textContent=tr('step').replace('{n}',i+1);if(focus){const target=panels[i].querySelector('input,select,summary');target?.focus({preventScroll:true});nav.scrollIntoView?.({block:'start',behavior:reduced()?'instant':'smooth'});}}
+ function show(i,focus=false){current=i;panels.forEach((p,j)=>p.hidden=j!==i);nav.querySelectorAll('button').forEach((b,j)=>{if(j===i)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');});prev.hidden=i===0;next.hidden=i===2;save.hidden=i!==2;indicator.textContent=tr('step').replace('{n}',i+1);if(focus){const target=panels[i].querySelector('input,select,summary,button.chip');target?.focus({preventScroll:true});nav.scrollIntoView?.({block:'start',behavior:reduced()?'instant':'smooth'});}}
  const validate=()=>[...panels[current].querySelectorAll('input,select')].every(el=>el.reportValidity());
  nav.addEventListener('click',e=>{const b=e.target.closest('[data-step]');if(b&&(Number(b.dataset.step)<=current||validate()))show(Number(b.dataset.step),true);});
  prev.onclick=()=>show(current-1,true);next.onclick=()=>{if(validate())show(current+1,true);};

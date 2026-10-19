@@ -275,3 +275,61 @@ Object.assign(I18N,{"hc.diet": {"sc": "饮食：填写时往前 24 小时", "tc"
 Object.assign(I18N,{"hc.title":{sc:"今日状态",tc:"今日狀態",en:"Today’s check-in"},"hc.estimate":{sc:"按实际情况填写，可估计；不确定就留空。今天的记录可以随时修改。",tc:"按實際情況填寫，可估計；不確定就留空。今天的記錄可以隨時修改。",en:"Estimates are welcome. Leave unknowns blank. You can update today’s record later."}});
 
 Object.assign(I18N,{"hc.recovery": {"sc": "醒来时恢复感", "tc": "醒來時恢復感", "en": "Recovery on waking"}, "hc.recoveryOptions": {"sc": ["未填写", "很差", "较差", "一般", "较好", "很好"], "tc": ["未填寫", "很差", "較差", "一般", "較好", "很好"], "en": ["Not recorded", "Very poor", "Poor", "Neutral", "Good", "Very good"]}, "hc.caffeine": {"sc": "过去 24 小时喝了什么含咖啡因饮料", "tc": "過去 24 小時喝了甚麼含咖啡因飲品", "en": "Caffeinated drinks in the past 24 hours"}, "hc.caffeineOptions": {"sc": ["未填写", "没有喝", "咖啡", "茶", "能量饮料", "可乐", "混合 / 其他"], "tc": ["未填寫", "沒有喝", "咖啡", "茶", "能量飲品", "可樂", "混合 / 其他"], "en": ["Not recorded", "None", "Coffee", "Tea", "Energy drink", "Cola", "Mixed / other"]}, "hc.caffeineMl": {"sc": "总饮用量（毫升，估计即可）", "tc": "總飲用量（毫升，可估計）", "en": "Total drink volume (ml, estimate)"}, "hc.caffeineTime": {"sc": "最后一次饮用时间", "tc": "最後一次飲用時間", "en": "Last drink time"}, "hc.caffeineNote": {"sc": "记录饮料量，不推算咖啡因剂量；多种饮料选“混合 / 其他”。", "tc": "記錄飲品量，不推算咖啡因劑量；多種飲品選「混合 / 其他」。", "en": "Record beverage volume, not an estimated caffeine dose. Choose mixed for multiple drinks."}});
+
+Object.assign(I18N,{
+  "status_disclaimer":{
+    "sc":"自评记录，不是体检；不填=未知",
+    "tc":"自評記錄，不是體檢；不填=未知",
+    "en":"Self-reported, not a checkup; blank = unknown"
+  },
+  "status_sleep":{
+    "sc":"昨晚睡眠",
+    "tc":"昨晚睡眠",
+    "en":"Last night’s sleep"
+  },
+  "status_sleepOptions":{
+    "sc":["＜5h","5–6h","6–7h","7–8h","＞8h"],
+    "tc":["＜5h","5–6h","6–7h","7–8h","＞8h"],
+    "en":["<5h","5–6h","6–7h","7–8h",">8h"]
+  },
+  "status_alert":{
+    "sc":"现在清醒",
+    "tc":"現在清醒",
+    "en":"Alertness now"
+  },
+  "status_alertOptions":{
+    "sc":["困","一般","清醒"],
+    "tc":["睏","一般","清醒"],
+    "en":["Sleepy","OK","Alert"]
+  },
+  "status_discomfort":{
+    "sc":"身体不适",
+    "tc":"身體不適",
+    "en":"Feeling unwell"
+  },
+  "status_discomfortOptions":{
+    "sc":["无","有"],
+    "tc":["無","有"],
+    "en":["No","Yes"]
+  },
+  "status_discomfort_tags":{
+    "sc":"具体不适（可多选）",
+    "tc":"具體不適（可多選）",
+    "en":"Symptoms (multi-select)"
+  },
+  "status_discomfort_tagsOptions":{
+    "sc":["头痛","咳嗽咽痛","发热感","胃肠不适","肌肉疼痛","其他"],
+    "tc":["頭痛","咳嗽咽痛","發熱感","腸胃不適","肌肉疼痛","其他"],
+    "en":["Headache","Cough / sore throat","Feverish","Digestive","Muscle pain","Other"]
+  },
+  "hc.estimate":{
+    "sc":"开打前点几下即可；不确定就跳过。今天的记录可以随时修改。",
+    "tc":"開打前點幾下即可；不確定就跳過。今天的記錄可以隨時修改。",
+    "en":"Tap a few chips before you queue. Skip unknowns. You can edit today’s record later."
+  },
+  "today.ciTodoP":{
+    "sc":"点选昨晚睡眠、现在清醒和身体不适；不确定就跳过。",
+    "tc":"點選昨晚睡眠、現在清醒和身體不適；不確定就跳過。",
+    "en":"Tap sleep, alertness, and discomfort. Skip anything uncertain."
+  }
+});
