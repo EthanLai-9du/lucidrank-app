@@ -19,7 +19,7 @@ function load(){
 }
 
 function detectMetric(text){
-  return /Performance\s*Score|戰鬥表現評分|戰鬥表現分|战斗表现评分|战斗表现分|表现分数|表現分數/i.test(text)?'performanceScore'
+  return /Performance\s*Score|戰鬥表現評分|戰鬥表現分|战斗表现评分|战斗表现分|表现评分|表現評分|表现分数|表現分數/i.test(text)?'performanceScore'
     :/\bACS\b/i.test(text)?'acs'
     :/\bADR\b/i.test(text)?'adr'
     :null;
@@ -85,8 +85,9 @@ function plausibleKda(k,d,a){
     &&k>=0&&d>=0&&a>=0&&k<=60&&d<=50&&a<=50;
 }
 
+// 13.06+ Performance Score / CN 表现评分 is 0–500; real games can be 1–19 (old floor 20 dropped those).
 function plausibleScore(score){
-  return Number.isFinite(score)&&score>=20&&score<=500;
+  return Number.isFinite(score)&&score>=0&&score<=500;
 }
 
 /** Collect bare scoreboard rows: optional combat score then K/D/A. */
@@ -96,10 +97,10 @@ function collectScoreboardRows(text){
   for(let li=0;li<lines.length;li++){
     const line=lines[li];
     // "Mint 80 6/16/5" / "400 28/17/5" — score immediately before K/D/A
-    const withScore=line.match(/(\d{2,3})\s+(\d{1,2})\s*[/|]\s*(\d{1,2})\s*[/|]\s*(\d{1,2})/g);
+    const withScore=line.match(/(\d{1,3})\s+(\d{1,2})\s*[/|]\s*(\d{1,2})\s*[/|]\s*(\d{1,2})/g);
     if(withScore){
       for(const chunk of withScore){
-        const m=chunk.match(/(\d{2,3})\s+(\d{1,2})\s*[/|]\s*(\d{1,2})\s*[/|]\s*(\d{1,2})/);
+        const m=chunk.match(/(\d{1,3})\s+(\d{1,2})\s*[/|]\s*(\d{1,2})\s*[/|]\s*(\d{1,2})/);
         if(!m) continue;
         const score=+m[1],k=+m[2],d=+m[3],a=+m[4];
         if(!plausibleScore(score)||!plausibleKda(k,d,a)) continue;
@@ -115,7 +116,7 @@ function collectScoreboardRows(text){
     // Score often sits on the previous OCR line: "player 474" then "30/16/2"
     let prevScore=null;
     if(li>0){
-      const pm=lines[li-1].match(/(?:^|\s)(\d{2,3})\s*$/);
+      const pm=lines[li-1].match(/(?:^|\s)(\d{1,3})\s*$/);
       if(pm&&plausibleScore(+pm[1])) prevScore=+pm[1];
     }
     for(const chunk of bare){
@@ -132,7 +133,7 @@ function collectScoreboardRows(text){
   }
   // Whole-text fallback when OCR collapsed newlines ("… 30/16/2 …")
   if(!rows.length){
-    const re=/(\d{2,3})\s+(\d{1,2})\s*[/|]\s*(\d{1,2})\s*[/|]\s*(\d{1,2})/g;
+    const re=/(\d{1,3})\s+(\d{1,2})\s*[/|]\s*(\d{1,2})\s*[/|]\s*(\d{1,2})/g;
     let m;
     while((m=re.exec(text))){
       const score=+m[1],k=+m[2],d=+m[3],a=+m[4];
@@ -278,11 +279,11 @@ function suggestions(text,game){
     k:/(?:\bKills?\b|击杀|擊殺)\s*[:：]\s*(\d{1,2})/i,
     d:/(?:\bDeaths?\b|死亡)\s*[:：]\s*(\d{1,2})/i,
     a:/(?:\bAssists?\b|助攻)\s*[:：]\s*(\d{1,2})/i,
-    score:/(?:Performance\s*Score|表現分數|戰鬥表現評分|戰鬥表現分|战斗表现评分|战斗表现分|表现分数|\bACS\b|\bADR\b)\s*[:：]?\s*(\d{1,3}(?:\.\d+)?)/i,
+    score:/(?:Performance\s*Score|表現分數|表現評分|戰鬥表現評分|戰鬥表現分|战斗表现评分|战斗表现分|表现评分|表现分数|\bACS\b|\bADR\b)\s*[:：]?\s*(\d{1,3}(?:\.\d+)?)/i,
     hs:/(?:Headshot\s*%?|爆头率|爆頭率|\bHS%)\s*[:：]?\s*(\d{1,3}(?:\.\d+)?)/i
   };
   const metric=detectMetric(raw);
-  if(metric==='performanceScore') fields.score=/(?:Performance\s*Score|表現分數|戰鬥表現評分|戰鬥表現分|战斗表现评分|战斗表现分|表现分数)\s*[:：]?\s*(\d{1,3}(?:\.\d+)?)/i;
+  if(metric==='performanceScore') fields.score=/(?:Performance\s*Score|表現分數|表現評分|戰鬥表現評分|戰鬥表現分|战斗表现评分|战斗表现分|表现评分|表现分数)\s*[:：]?\s*(\d{1,3}(?:\.\d+)?)/i;
   else if(metric==='acs') fields.score=/\bACS\b\s*[:：]?\s*(\d{1,3}(?:\.\d+)?)/i;
   else if(metric==='adr') fields.score=/\bADR\b\s*[:：]?\s*(\d{1,3}(?:\.\d+)?)/i;
   for(const [k,re] of Object.entries(fields)){
