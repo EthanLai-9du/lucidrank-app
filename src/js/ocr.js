@@ -396,14 +396,14 @@ function _open(form){
     const sx=r.x*image.naturalWidth/c.width,sy=r.y*image.naturalHeight/c.height;
     const sw=r.w*image.naturalWidth/c.width,sh=r.h*image.naturalHeight/c.height;
     let cw=Math.max(1,Math.round(sw)),ch=Math.max(1,Math.round(sh));
-    // Mild upscale for low-res crops only (cap ×3); then existing downscale >1600.
-    let maxSide=Math.max(cw,ch);
-    if(maxSide<720){
-      const s=Math.min(3,720/maxSide);
+    // Mild upscale on short edge (own-row strips): if min<80 → toward 120, cap ×3.
+    const short=Math.min(cw,ch);
+    if(short<80){
+      const s=Math.min(3,120/short);
       cw=Math.max(1,Math.round(cw*s));
       ch=Math.max(1,Math.round(ch*s));
-      maxSide=Math.max(cw,ch);
     }
+    const maxSide=Math.max(cw,ch);
     if(maxSide>1600){const s=1600/maxSide;cw=Math.max(1,Math.round(cw*s));ch=Math.max(1,Math.round(ch*s));}
     const crop=document.createElement('canvas');crop.width=cw;crop.height=ch;
     const ctx=crop.getContext('2d');
