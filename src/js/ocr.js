@@ -96,12 +96,136 @@ function plausibleScore(score){
   return Number.isFinite(score)&&score>=0&&score<=500;
 }
 
+/**
+ * Recover K/D/A when OCR drops a slash or turns "/" into "1".
+ * Only fills gaps: normal two-slash k/d/a matches still win on weight.
+ * Never invents values outside plausibleKda.
+ */
+function pushGluedCand(cands,k,d,a,score,weight){
+  if(!plausibleKda(k,d,a)||k+d+a===0) return;
+  if(score!=null&&!plausibleScore(score)) score=null;
+  cands.push({k,d,a,score,weight});
+}
+
+function recoverGluedKda(line){
+  const cands=[];
+  const s=String(line);
+
+  // A) both slashes read as "1": 14/12/4 → "1411214"
+  {
+    const re=/(?:^|[^\d])(\d{1,3})\s+(\d{1,2})1(\d{1,2})1(\d{1,2})(?=[^\d]|$)/g;
+    let m; while((m=re.exec(s))) pushGluedCand(cands,+m[2],+m[3],+m[4],+m[1],3);
+  }
+  {
+    const re=/(?:^|[^\d])(\d{1,2})1(\d{1,2})1(\d{1,2})(?=[^\d]|$)/g;
+    let m; while((m=re.exec(s))) pushGluedCand(cands,+m[1],+m[2],+m[3],null,2);
+  }
+
+  // B) one slash kept; other became "1" between single-digit D and A:
+  //    19/7/4 → "19/714"; 15/7/7 → "15/717"
+  {
+    const re=/(?:^|[^\d])(\d{1,3})\s+(\d{1,2})\s*[/|]\s*(\d)1(\d)(?=[^\d]|$)/g;
+    let m; while((m=re.exec(s))) pushGluedCand(cands,+m[2],+m[3],+m[4],+m[1],3);
+  }
+  {
+    const re=/(?:^|[^\d])(\d{1,2})\s*[/|]\s*(\d)1(\d)(?=[^\d]|$)/g;
+    let m; while((m=re.exec(s))) pushGluedCand(cands,+m[1],+m[2],+m[3],null,2);
+  }
+
+  // C) K+D glued, slash before A remains: "2719/11" → 27/19/11
+  {
+    const re=/(?:^|[^\d])(\d{1,3})\s+(\d{3,4})\s*[/|]\s*(\d{1,2})(?=[^\d]|$)/g;
+    let m;
+    while((m=re.exec(s))){
+      const score=+m[1], glued=m[2], a=+m[3];
+      for(let i=1;i<=2;i++){
+        if(glued.length-i<1||glued.length-i>2) continue;
+        pushGluedCand(cands,+glued.slice(0,i),+glued.slice(i),a,score,3);
+      }
+    }
+  }
+  {
+    const re=/(?:^|[^\d])(\d{3,4})\s*[/|]\s*(\d{1,2})(?=[^\d]|$)/g;
+    let m;
+    while((m=re.exec(s))){
+      const glued=m[1], a=+m[2];
+      for(let i=1;i<=2;i++){
+        if(glued.length-i<1||glued.length-i>2) continue;
+        pushGluedCand(cands,+glued.slice(0,i),+glued.slice(i),a,null,2);
+      }
+    }
+  }
+
+  // D) D+A glued into exactly 2 digits: "4/72" → 4/7/2 (best-effort; may lose a tens digit)
+  {
+    const re=/(?:^|[^\d])(\d{1,3})\s+(\d{1,2})\s*[/|]\s*(\d)(\d)(?=[^\d]|$)/g;
+    let m; while((m=re.exec(s))) pushGluedCand(cands,+m[2],+m[3],+m[4],+m[1],2);
+  }
+  {
+    const re=/(?:^|[^\d])(\d{1,2})\s*[/|]\s*(\d)(\d)(?=[^\d]|$)/g;
+    let m; while((m=re.exec(s))) pushGluedCand(cands,+m[1],+m[2],+m[3],null,1);
+  }
+
+  // E) D+A glued into 3–4 digits after one slash:
+  //    prefer embedded "1" as slash ("14/1216"→14/12/6, "32/2015"→32/20/5);
+  //    else peel last 1–2 digits as A ("32/205"→32/20/5)
+  {
+    const re=/(?:^|[^\d])(\d{1,3})\s+(\d{1,2})\s*[/|]\s*(\d{3,4})(?=[^\d]|$)/g;
+    let m;
+    while((m=re.exec(s))){
+      const score=+m[1], k=+m[2], rest=m[3];
+      const asSlash=rest.match(/^(\d{1,2})1(\d{1,2})$/);
+      if(asSlash) pushGluedCand(cands,k,+asSlash[1],+asSlash[2],score,3);
+      else{
+        for(let al=1;al<=2;al++){
+          if(rest.length-al<1||rest.length-al>2) continue;
+          pushGluedCand(cands,k,+rest.slice(0,rest.length-al),+rest.slice(rest.length-al),score,1);
+        }
+      }
+    }
+  }
+  {
+    const re=/(?:^|[^\d])(\d{1,2})\s*[/|]\s*(\d{3,4})(?=[^\d]|$)/g;
+    let m;
+    while((m=re.exec(s))){
+      const k=+m[1], rest=m[2];
+      const asSlash=rest.match(/^(\d{1,2})1(\d{1,2})$/);
+      if(asSlash) pushGluedCand(cands,k,+asSlash[1],+asSlash[2],null,2);
+      else{
+        for(let al=1;al<=2;al++){
+          if(rest.length-al<1||rest.length-al>2) continue;
+          pushGluedCand(cands,k,+rest.slice(0,rest.length-al),+rest.slice(rest.length-al),null,1);
+        }
+      }
+    }
+  }
+
+  cands.sort((a,b)=>b.weight-a.weight||(b.score!=null)-(a.score!=null));
+  const seen=new Set(), out=[];
+  for(const c of cands){
+    const key=c.k+'/'+c.d+'/'+c.a+'@'+(c.score??'');
+    if(seen.has(key)) continue;
+    seen.add(key);
+    out.push(c);
+  }
+  return out;
+}
+
+function lineHasNaturalKda(line){
+  return /\d{1,2}\s*[/|]\s*\d{1,2}\s*[/|]\s*\d{1,2}/.test(line);
+}
+
 /** Collect bare scoreboard rows: optional combat score then K/D/A. */
 function collectScoreboardRows(text){
   const rows=[];
   const lines=String(text).split(/\r?\n/);
   for(let li=0;li<lines.length;li++){
     const line=lines[li];
+    let prevScore=null;
+    if(li>0){
+      const pm=lines[li-1].match(/(?:^|\s)(\d{1,3})\s*$/);
+      if(pm&&plausibleScore(+pm[1])) prevScore=+pm[1];
+    }
     // "Mint 80 6/16/5" / "400 28/17/5" — score immediately before K/D/A
     const withScore=line.match(/(\d{1,3})\s+(\d{1,2})\s*[/|]\s*(\d{1,2})\s*[/|]\s*(\d{1,2})/g);
     if(withScore){
@@ -114,27 +238,30 @@ function collectScoreboardRows(text){
         if(lineHasLocalMarker(line)) weight+=5;
         rows.push({k,d,a,score,weight,line,li});
       }
-      continue;
     }
     // Bare "30/16/2" on a line (CN scoreboard often has no K/D/A label)
     const bare=line.match(/(\d{1,2})\s*[/|]\s*(\d{1,2})\s*[/|]\s*(\d{1,2})/g);
-    if(!bare) continue;
-    // Score often sits on the previous OCR line: "player 474" then "30/16/2"
-    let prevScore=null;
-    if(li>0){
-      const pm=lines[li-1].match(/(?:^|\s)(\d{1,3})\s*$/);
-      if(pm&&plausibleScore(+pm[1])) prevScore=+pm[1];
+    if(bare){
+      for(const chunk of bare){
+        const m=chunk.match(/(\d{1,2})\s*[/|]\s*(\d{1,2})\s*[/|]\s*(\d{1,2})/);
+        if(!m) continue;
+        const k=+m[1],d=+m[2],a=+m[3];
+        if(!plausibleKda(k,d,a)) continue;
+        if(k+d+a===0) continue;
+        let weight=1;
+        if(lineHasLocalMarker(line)) weight+=5;
+        if(prevScore!=null) weight+=1;
+        rows.push({k,d,a,score:prevScore,weight,line,li});
+      }
     }
-    for(const chunk of bare){
-      const m=chunk.match(/(\d{1,2})\s*[/|]\s*(\d{1,2})\s*[/|]\s*(\d{1,2})/);
-      if(!m) continue;
-      const k=+m[1],d=+m[2],a=+m[3];
-      if(!plausibleKda(k,d,a)) continue;
-      if(k+d+a===0) continue;
-      let weight=1;
+    // Slash-glue recovery (missing "/" or "/"→"1"). High-confidence glued hits can outrank a
+    // wrong natural row on the same noisy OCR line (weight 3 with score vs natural 2).
+    for(const g of recoverGluedKda(line)){
+      let weight=g.weight;
       if(lineHasLocalMarker(line)) weight+=5;
-      if(prevScore!=null) weight+=1;
-      rows.push({k,d,a,score:prevScore,weight,line,li});
+      let score=g.score;
+      if(score==null&&prevScore!=null){ score=prevScore; weight+=1; }
+      rows.push({k:g.k,d:g.d,a:g.a,score,weight,line,li,glued:true});
     }
   }
   // Whole-text fallback when OCR collapsed newlines ("… 30/16/2 …")
