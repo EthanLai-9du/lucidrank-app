@@ -396,10 +396,19 @@ function _open(form){
     const sx=r.x*image.naturalWidth/c.width,sy=r.y*image.naturalHeight/c.height;
     const sw=r.w*image.naturalWidth/c.width,sh=r.h*image.naturalHeight/c.height;
     let cw=Math.max(1,Math.round(sw)),ch=Math.max(1,Math.round(sh));
-    const maxSide=Math.max(cw,ch);
+    // Mild upscale for low-res crops only (cap ×3); then existing downscale >1600.
+    let maxSide=Math.max(cw,ch);
+    if(maxSide<720){
+      const s=Math.min(3,720/maxSide);
+      cw=Math.max(1,Math.round(cw*s));
+      ch=Math.max(1,Math.round(ch*s));
+      maxSide=Math.max(cw,ch);
+    }
     if(maxSide>1600){const s=1600/maxSide;cw=Math.max(1,Math.round(cw*s));ch=Math.max(1,Math.round(ch*s));}
     const crop=document.createElement('canvas');crop.width=cw;crop.height=ch;
-    crop.getContext('2d').drawImage(image,sx,sy,sw,sh,0,0,cw,ch);
+    const ctx=crop.getContext('2d');
+    ctx.imageSmoothingEnabled=true;
+    ctx.drawImage(image,sx,sy,sw,sh,0,0,cw,ch);
     return crop;
   }
 
