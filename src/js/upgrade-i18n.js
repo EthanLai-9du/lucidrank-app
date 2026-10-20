@@ -1,13 +1,13 @@
 /* Region-aware match and evidence UI. */
 Object.assign(I18N,{
   "m.ps": {
-    "sc": "战斗表现评分",
-    "tc": "表現分數",
+    "sc": "表现评分",
+    "tc": "表現評分",
     "en": "Performance Score"
   },
   "m.agent": {
     "sc": "英雄",
-    "tc": "特務",
+    "tc": "英雄",
     "en": "Agent"
   },
   "m.role": {
@@ -844,7 +844,7 @@ Object.assign(I18N,{"ins.ci": {"sc": "分数差探索区间：{lo} 至 {hi}（�
 
 Object.assign(I18N,{"ins.healthCompare": {"sc": "分数差：正常状态 {normal}；含不适场次 {all}。", "tc": "分數差：正常狀態 {normal}；含不適場次 {all}。", "en": "Score gap: normal {normal}; including unwell matches {all}."}, "ins.healthFlip": {"sc": "包含不适场次后方向反转，结果已降级。", "tc": "包含不適場次後方向反轉，結果已降級。", "en": "Direction reverses when unwell matches are included; evidence downgraded."}, "m.settledWR": {"sc": "胜率（不含平局）", "tc": "勝率（不含和局）", "en": "Win rate (draws excluded)"}});
 
-Object.assign(I18N,{'lu.agent':{sc:'特工',tc:'特務',en:'Agent'}});
+Object.assign(I18N,{'lu.agent':{sc:'英雄',tc:'英雄',en:'Agent'}});
 
 Object.assign(I18N,{"m.readiness": {"sc": "这场的准备与状态", "tc": "這場的準備與狀態", "en": "Preparation & session state"}, "m.readinessNote": {"sc": "按开局前的情况填写，记不清可留空。赛后补记请选择“赛后回忆”。", "tc": "按開局前的情況填寫，記不清可留空。賽後補記請選「賽後回憶」。", "en": "Describe the state before this match. Leave uncertain answers blank; mark retrospective entries as recalled after play."}, "m.pressure": {"sc": "开局前压力 / 烦躁（0–10）", "tc": "開局前壓力 / 煩躁（0–10）", "en": "Pre-match pressure / irritability (0–10)"}, "m.sessionMinutes": {"sc": "开局前已连续玩多久（分钟）", "tc": "開局前已連續玩多久（分鐘）", "en": "Time already playing before this match (min)"}, "m.rested": {"sc": "这段游戏期间离开座位休息过吗", "tc": "這段遊戲期間離開座位休息過嗎", "en": "Did you step away during this session?"}, "m.yes": {"sc": "有", "tc": "有", "en": "Yes"}, "m.no": {"sc": "没有", "tc": "沒有", "en": "No"}, "m.warmup": {"sc": "这场之前的热身", "tc": "這場之前的熱身", "en": "Warm-up before this match"}, "m.warmupMinutes": {"sc": "热身时长（分钟）", "tc": "熱身時長（分鐘）", "en": "Warm-up duration (min)"}, "m.warmup-none": {"sc": "未热身", "tc": "未熱身", "en": "No warm-up"}, "m.warmup-range": {"sc": "训练场", "tc": "訓練場", "en": "Practice range"}, "m.warmup-dm": {"sc": "死斗", "tc": "死鬥", "en": "Deathmatch"}, "m.warmup-aim": {"sc": "瞄准训练", "tc": "瞄準訓練", "en": "Aim training"}, "m.warmup-mixed": {"sc": "混合 / 其他", "tc": "混合 / 其他", "en": "Mixed / other"}, "m.reportTiming": {"sc": "这份状态何时填写", "tc": "這份狀態何時填寫", "en": "When was this state recorded?"}, "m.timing-pre": {"sc": "开局前填写", "tc": "開局前填寫", "en": "Before the match"}, "m.timing-post": {"sc": "赛后回忆", "tc": "賽後回憶", "en": "Recalled after play"}, "m.anomalyStatus": {"sc": "这场有没有设备 / 环境异常", "tc": "這場有沒有設備 / 環境異常", "en": "Technical / environmental issues this match"}, "m.issue-none": {"sc": "明确没有", "tc": "明確沒有", "en": "Confirmed none"}, "m.issue-yes": {"sc": "有异常（勾选下方）", "tc": "有異常（勾選下方）", "en": "Issues occurred (select below)"}, "m.anomalies": {"sc": "异常情况", "tc": "異常情況", "en": "Issues"}, "m.issue-stutter": {"sc": "掉帧 / 卡顿", "tc": "掉幀 / 卡頓", "en": "Frame drops / stutter"}, "m.issue-packetLoss": {"sc": "网络延迟 / 丢包", "tc": "網絡延遲 / 丟包", "en": "Latency / packet loss"}, "m.issue-disconnect": {"sc": "掉线", "tc": "斷線", "en": "Disconnected"}, "m.issue-interruption": {"sc": "被打断", "tc": "被打斷", "en": "Interrupted"}, "m.issue-other": {"sc": "其他异常", "tc": "其他異常", "en": "Other issue"}});
 
@@ -853,4 +853,10 @@ Object.assign(I18N,{
  's.dataP':{sc:'游客数据保存在本机；登录后可同步到云端。请保存恢复码并定期导出备份。',tc:'訪客資料儲存在本機；登入後可同步到雲端。請保存復原碼並定期匯出備份。',en:'Guest records stay on this device; sign in for cloud sync. Save your recovery code and export backups regularly.'},
  'm.ocrP':{sc:'截图保留压缩小图；登录后随记录同步。数值请核对后填写。',tc:'截圖保留壓縮小圖；登入後隨記錄同步。數值請核對後填寫。',en:'A small screenshot copy is kept and synced when signed in. Review numbers before saving.'},
  'tab.week':{sc:'本周',tc:'本週',en:'Week'},'tab.lineups':{sc:'点位',tc:'點位',en:'Lineups'}
+});
+
+Object.assign(I18N,{
+  "m.advanced": {"sc":"高级（段位 / 状态 / 更多数据）","tc":"進階（段位 / 狀態 / 更多數據）","en":"Advanced (rank / state / more stats)"},
+  "m.quickHint": {"sc":"默认 30 秒：结果 · K/D/A · 表现评分 · 地图 · 英雄。其余点「高级」。","tc":"預設 30 秒：結果 · K/D/A · 表現評分 · 地圖 · 英雄。其餘點「進階」。","en":"Default ~30s: result · K/D/A · performance score · map · agent. Rest under Advanced."},
+  "ocr.unavailable": {"sc":"截图辨识暂不可用（缺少辨识组件）。请手填数字；截图仍可单独保存。","tc":"截圖辨識暫不可用（缺少辨識組件）。請手填數字；截圖仍可單獨保存。","en":"Screenshot OCR is unavailable (engine missing). Type numbers; you can still attach a screenshot."}
 });
