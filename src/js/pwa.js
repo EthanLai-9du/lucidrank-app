@@ -64,7 +64,7 @@ function renderSettings(){
     <div class="srow"><div><h3>${t('web.remind')}</h3><p class="muted sm">${t('web.remindP')}</p></div></div>
   </div>
   <div class="card set">
-    <div class="srow"><div><h3>${t('s.data')}</h3><p class="muted sm">${t('s.dataP')}</p></div></div>
+    <div class="srow"><div><h3>${t('s.data')}</h3></div></div>
     <div class="row gap wrap">
       <button class="btn ghost" data-act="export">${t('s.export')}</button>
       <button class="btn ghost" data-web="import">${t('web.import')}</button>

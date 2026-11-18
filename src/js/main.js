@@ -44,7 +44,7 @@ function renderToday(){
     <div class="col">
       <div class="card ci-card${rec?' done':''}">
         ${rec?`<div class="row between"><h2>${t('today.ciDone')} <span class="ok-dot">✓</span></h2><button class="btn ghost sm" data-act="checkin">${t('today.ciRedo')}</button></div>${rec.healthLog&&window.LRHealth&&LRHealth.valid(rec.healthLog)?LRHealth.feedback(rec.healthLog,D(),today):ciChips(rec.a)}`
-             :`<h2>${t('today.ciTodo')}</h2><p class="muted">${t('today.ciTodoP')}</p><div class="ci-cta"><button class="btn primary" data-act="checkin">${t('today.ciGo')}</button><span class="grow"></span><button class="link-btn" data-act="checkinHere">${t('today.here')}</button></div>`}
+             :`<h2>${t('today.ciTodo')}</h2><div class="ci-cta"><button class="btn primary" data-act="checkin">${t('today.ciGo')}</button><span class="grow"></span><button class="link-btn" data-act="checkinHere">${t('today.here')}</button></div>`}
       </div>
       <div class="card">
         <h2>${t('today.matches')}</h2>
@@ -86,7 +86,7 @@ function logForm(){
       <div><label class="lbl">${t('m.rank')} <small>${t('optional')}</small></label><input name="rank" maxlength="24" placeholder="${esc(t('m.rankPh'))}"></div>
     </div>
     <div class="fgrid">${fieldSelect('health',['normal','unwell','recovering','fatigued'].map(x=>[x,t('m.'+x)]),'m.health')}</div>
-    <details class="match-readiness"><input type="hidden" name="stateRecordedAt" value=""><summary>${t('m.readiness')}</summary><p class="muted sm">${t('m.readinessNote')}</p><div class="fgrid">
+    <details class="match-readiness"><input type="hidden" name="stateRecordedAt" value=""><summary>${t('m.readiness')}</summary><div class="fgrid">
  ${numberField('pressure','m.pressure',0,10)}${numberField('sessionMinutes','m.sessionMinutes',0,1440)}
  ${fieldSelect('rested',[['yes',t('m.yes')],['no',t('m.no')]],'m.rested')}
  ${fieldSelect('warmupType',['none','range','dm','aim','mixed'].map(x=>[x,t('m.warmup-'+x)]),'m.warmup')}
@@ -102,7 +102,7 @@ function logForm(){
       <div><label class="lbl" for="match-playedAt">${t('m.playedAt')}</label><input id="match-playedAt" name="playedAt" type="datetime-local"></div>${numberField('rounds','m.rounds',1,100)}${numberField('rr','m.rr',-100,100)}
       ${g==='val'?fieldSelect('metricType',[['performanceScore',t('m.ps')],['acs',t('m.legacy')]],'m.ps','performanceScore'):''}
     </div>
-    </details><p class="muted xs">${t('m.acsHint')}</p>
+    </details>
     <details class="match-extra"><summary>${t('m.more')}</summary><div class="fgrid">
       ${numberField('adr','m.adr',0,999,.1)}${numberField('damageDelta','m.dd',-999,999,.1)}${numberField('damageDealt','m.damage',0,100000)}${numberField('damageReceived','m.received',0,100000)}
       ${numberField('hs','m.hs',0,100,.1)}${numberField('kast','m.kast',0,100,.1)}
@@ -110,9 +110,8 @@ function logForm(){
       ${numberField('clutches','m.clutches',0,100)}${numberField('trades','m.trades',0,100)}
       ${g==='val'?numberField('trackerScore','m.tracker',0,1000):''}
       ${fieldSelect('source',['manual','screenshot','external'].map(x=>[x,t('m.'+x)]),'m.source','manual')}
-    </div><p class="muted xs">${t('m.acsHint')}</p></details>
+    </div></details>
     <div class="shotrow"><button type="button" class="btn ghost sm" data-open-ocr>${t('ocr.start')}</button><span class="muted xs" data-ocr-crop-hint>${t('ocr.hintCropRow')}</span><button type="button" class="btn ghost sm" id="shotBtn">${form.shot?esc(t('m.shotOn',{f:form.shot.split(/[\\/]/).pop()})):t('m.shot')}</button></div>
-    <p class="muted xs">${t('m.ocrP')}</p>
     <div class="row between"><span class="formmsg" id="formMsg"></span><button class="btn primary" type="submit">${t('m.save')}</button></div>
   </form>`;
 }
@@ -179,7 +178,7 @@ function renderMatches(){
 function renderInsights(){
   const el=$('#v-insights');
   const g=insGame||S.mainGame(D()), ins=S.insights(D(),g,null,context), m=ins.metric;
-  const head=`<header class="vh"><div><h1>${t('ins.h')}</h1><p class="lead">${t('ins.lead')}</p></div>
+  const head=`<header class="vh"><div><h1>${t('ins.h')}</h1></div>
     <div class="row gap"><div class="seg">${['val','cs2'].map(x=>`<button data-ig="${x}" aria-pressed="${g===x}">${gameName(x)}</button>`).join('')}</div>
     ${D().sampleOn?`<button class="btn ghost sm" data-act="sampleClear">${t('ins.sampleClear')}</button>`:`<button class="btn ghost sm" data-act="sample">${t('ins.sampleBtn')}</button>`}</div></header>
     ${D().sampleOn?`<p class="banner">${t('ins.sampleOn',{n:Object.values(D().checkins).filter(c=>c.sample).length})}</p>`:''}`;
@@ -187,7 +186,6 @@ function renderInsights(){
   if(ins.need>0){
     body=`<div class="card empty-ins"><div class="need">${t('ins.need',{n:ins.need})}</div>
       <div class="pbar"><i style="width:${ins.have/ins.min*100}%"></i></div>
-      <p class="muted">${t('ins.needP',{min:ins.min,have:ins.have})}</p>
       ${D().sampleOn?'':`<button class="btn primary" data-act="sample">${t('ins.sampleBtn')}</button>`}</div>`;
   }else{
     const o=ins.overall;
@@ -200,7 +198,7 @@ function renderInsights(){
   }
   const opts=(name,values,label)=>`<label class="lbl">${t(label)}<select data-context="${name}"><option value="">${t('ins.all')}</option>${values.map(v=>`<option value="${esc(v)}"${(context[name]||ins.context[name])===v?' selected':''}>${esc(['role','mode','party'].includes(name)?t('m.'+v):name==='metricType'?C.metricLabel({metricType:v}):name==='agent'?C.agentName(v):name==='map'?C.mapName(v):v)}</option>`).join('')}</select></label>`;
   const available=D().matches.filter(x=>x.game===g&&!x.sample), unique=k=>[...new Set(available.map(x=>x[k]).filter(Boolean))].sort();
-  const controls=`<div class="card"><h2>${t('ins.context')}</h2><div class="fgrid">${['agent','role','mode','map','patch','rank','party'].map(k=>opts(k,unique(k),'m.'+k)).join('')}${opts('metricType',g==='val'?['performanceScore','acs']:['adr'],'m.ps')}</div><p class="muted sm">${t('ins.exclude')}</p><p class="muted xs">${t('ins.excluded',{n:ins.excluded})}</p></div>`;
+  const controls=`<div class="card"><h2>${t('ins.context')}</h2><div class="fgrid">${['agent','role','mode','map','patch','rank','party'].map(k=>opts(k,unique(k),'m.'+k)).join('')}${opts('metricType',g==='val'?['performanceScore','acs']:['adr'],'m.ps')}</div><p class="muted xs">${t('ins.excluded',{n:ins.excluded})}</p></div>`;
   el.innerHTML=head+controls+body+`<p class="note">${t('ins.note')}</p>`;
   $$('[data-context]',el).forEach(x=>x.addEventListener('change',()=>{ context[x.dataset.context]=x.value; render(); }));
   $$('[data-ig]',el).forEach(b=>b.addEventListener('click',()=>{ insGame=b.dataset.ig; context={};render(); }));
@@ -228,7 +226,7 @@ function renderWeek(){
   let lastHTML=`<p class="muted">${t('w.lastNone')}</p>`;
   if(w.last){ const le=w.lastEval, res=le.x>=le.n?'w.lastHit':le.x===le.n-1?'w.lastClose':'w.lastMiss';
     lastHTML=`<div class="row gap">${ring(le.x,le.n,56)}<div><p class="goal-t sm">${S.goalText(w.last)}</p><p class="res-${res.slice(6).toLowerCase()}">${t(res)}</p></div></div>${weekDots(le)}`; }
-  el.innerHTML=`<header class="vh"><div><h1>${t('w.h')}</h1><p class="lead">${t('w.lead')}</p></div>${sampleTag()}</header>
+  el.innerHTML=`<header class="vh"><div><h1>${t('w.h')}</h1></div>${sampleTag()}</header>
   <div class="grid2 wk">
     <div class="col">
       <div class="card goal-card">
@@ -256,13 +254,13 @@ function renderSettings(){
   el.innerHTML=`<header class="vh"><div><h1>${t('s.h')}</h1></div></header>
   <div class="card set"><h3>${t('s.region')}</h3>
     <div class="srow"><div><h3>${t('s.lang')}</h3></div><div class="seg">${[['sc','简中'],['tc','繁中'],['en','English']].map(([k,l])=>`<button data-lang="${k}" aria-pressed="${lp===k}">${l}</button>`).join('')}</div></div>
-    <div class="srow"><div><h3>${t('s.startup')}</h3><p class="muted sm">${t('s.startupP')}</p></div><label class="sw"><input type="checkbox" id="swStart"${autostartOn?' checked':''}><i></i></label></div>
+    <div class="srow"><div><h3>${t('s.startup')}</h3></div><label class="sw"><input type="checkbox" id="swStart"${autostartOn?' checked':''}><i></i></label></div>
     <div class="srow"><div><h3>${t('s.watch')}</h3><p class="muted sm">${t('s.watchP')}</p></div><div class="col-r">
       ${['val','cs2'].map(g=>`<label class="chk"><input type="checkbox" data-watch="${g}"${s.watch[g]!==false?' checked':''}><i></i>${gameName(g)}</label>`).join('')}</div></div>
   </div>
   ${window.LRUpdater?LRUpdater.card():''}
   <div class="card set">
-    <div class="srow"><div><h3>${t('s.data')}</h3><p class="muted sm">${t('s.dataP')}</p><p class="loc"><span>${t('s.loc')}</span><code>${esc(dataLoc)}</code></p></div></div>
+    <div class="srow"><div><h3>${t('s.data')}</h3><p class="loc"><span>${t('s.loc')}</span><code>${esc(dataLoc)}</code></p></div></div>
     <div class="row gap wrap"><button class="btn ghost" data-act="export">${t('s.export')}</button>
     ${D().sampleOn?`<button class="btn ghost" data-act="sampleClear">${t('ins.sampleClear')}</button>`:`<button class="btn ghost" data-act="sample">${t('ins.sampleBtn')}</button>`}
     <button class="btn danger" data-act="wipe">${t('s.delete')}</button></div>

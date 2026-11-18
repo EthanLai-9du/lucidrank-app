@@ -94,15 +94,15 @@ function boot(host,opts={}){
   const discYes=discomfortYes(h);
   const discSel=h.discomfort==null&&!(h.symptoms||[]).length&&!discYes?'':(discYes?'yes':'no');
   const tagSel=(h.symptoms||[]).filter(i=>i>0);
-  content.innerHTML=`<form class="hc-form"><p class="hc-estimate">${t('hc.estimate')}</p>
+  content.innerHTML=`<form class="hc-form">
 <div class="hc-body-step">
 ${chipGroup('status_sleep','sleep',SLEEP_CHIPS.map(c=>c.id),sleepSel)}
 ${chipGroup('status_alert','alert',ALERT_CHIPS.map(c=>c.id),alertSel)}
 ${chipGroup('status_discomfort','discomfort',['no','yes'],discSel)}
 <div class="hc-tag-wrap"${discSel==='yes'?'':' hidden'}">${chipGroup('status_discomfort_tags','tags',TAG_IDS.map(String),tagSel.map(String),true)}</div>
 </div>
-<details class="hc-diet"><summary>${t('hc.diet')}</summary><p>${t('hc.dietNote')}</p><p>${t('hc.examples')}</p><div class="hc-grid">${field('hc.meals','meals','number',h.meals)}${field('hc.oily','oilyMeals','number',h.oilyMeals)}${field('hc.salty','saltyMeals','number',h.saltyMeals)}${select('hc.fullness','fullness',[0,1,2,3,4],h)}${select('hc.caffeine','caffeineType',caffeineValues,h)}${field('hc.caffeineMl','caffeineMl','number',h.caffeineMl)}${field('hc.caffeineTime','caffeineTime','datetime-local',h.caffeineTime)}</div><p>${t('hc.caffeineNote')}</p></details>
-<h3>${t('hc.plan')}</h3><p>${t('hc.selfPlan')}</p><div class="hc-grid">${select('hc.before','plannedBefore',['false','true'],h)}${field('hc.planned','practicePlanned','number',h.practicePlanned)}${field('hc.completed','practiceDone','number',h.practiceDone)}${field('hc.breakPlanned','breaksPlanned','number',h.breaksPlanned)}${field('hc.breakDone','breaksDone','number',h.breaksDone)}${select('hc.reason','reason',[0,1,2,3,4,5],h)}</div>
+<details class="hc-diet"><summary>${t('hc.diet')}</summary><div class="hc-grid">${field('hc.meals','meals','number',h.meals)}${field('hc.oily','oilyMeals','number',h.oilyMeals)}${field('hc.salty','saltyMeals','number',h.saltyMeals)}${select('hc.fullness','fullness',[0,1,2,3,4],h)}${select('hc.caffeine','caffeineType',caffeineValues,h)}${field('hc.caffeineMl','caffeineMl','number',h.caffeineMl)}${field('hc.caffeineTime','caffeineTime','datetime-local',h.caffeineTime)}</div></details>
+<h3>${t('hc.plan')}</h3><div class="hc-grid">${select('hc.before','plannedBefore',['false','true'],h)}${field('hc.planned','practicePlanned','number',h.practicePlanned)}${field('hc.completed','practiceDone','number',h.practiceDone)}${field('hc.breakPlanned','breaksPlanned','number',h.breaksPlanned)}${field('hc.breakDone','breaksDone','number',h.breaksDone)}${select('hc.reason','reason',[0,1,2,3,4,5],h)}</div>
 <p class="hc-error" role="alert"></p><button type="submit" class="btn primary">${t('hc.save')}</button> <button type="button" class="btn ghost hc-close">${t('close')}</button></form>`;
   const f=content.querySelector('form');
   const tagWrap=f.querySelector('.hc-tag-wrap');

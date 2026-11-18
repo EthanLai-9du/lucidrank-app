@@ -33,8 +33,7 @@ function renderFilters(){
   el.innerHTML=`
     <label class="lbl">${window.LRTutorials?LRTutorials.t('search'):'Search'}<input data-tutorial-search value="${esc(st.query||'')}" type="search"></label><div class="seg full">${['val','cs2'].map(g=>`<button data-game="${g}" aria-pressed="${st.game===g}">${gameName(g)}</button>`).join('')}</div>
     <div class="lu-compact-filters"><label class="lbl">${t('lu.map')}<select data-compact-filter="map">${maps.map(m=>`<option value="${esc(m)}" ${st.map===m?'selected':''}>${esc(LRCatalog.mapName(m))}</option>`).join('')}</select></label><label class="lbl">${t(st.game==='val'?'lu.agent':'lu.util')}<select data-compact-filter="${st.game==='val'?'agent':'util'}">${[['any',t('lu.any')],...(st.game==='val'?AGENTS.map(a=>[a,LRCatalog.agentName(a)]):UTIL.map(u=>[u,tx(UTIL_NAME[u])]))].map(([v,l])=>`<option value="${esc(v)}" ${v===(st.game==='val'?st.agent:st.util)?'selected':''}>${esc(l)}</option>`).join('')}</select></label></div>
-    <div class="fblock lu-wide-filters"><label class="lbl">${t('lu.map')}</label><div class="chips">${maps.map(m=>chip('map',m,esc(LRCatalog.mapName(m)),st.map===m)).join('')}</div>
-      <p class="muted xs">${t('lu.pickMap')}</p></div>
+    <div class="fblock lu-wide-filters"><label class="lbl">${t('lu.map')}</label><div class="chips">${maps.map(m=>chip('map',m,esc(LRCatalog.mapName(m)),st.map===m)).join('')}</div></div>
     ${st.game==='val'
       ?`<div class="fblock lu-wide-filters"><label class="lbl">${t('lu.agent')}</label><div class="chips">${chip('agent','any',t('lu.any'),st.agent==='any')}${AGENTS.map(a=>chip('agent',a,esc(LRCatalog.agentName(a)),st.agent===a)).join('')}</div></div>`
       :`<div class="fblock lu-wide-filters"><label class="lbl">${t('lu.util')}</label><div class="chips">${chip('util','any',t('lu.any'),st.util==='any')}${UTIL.map(u=>chip('util',u,esc(tx(UTIL_NAME[u])),st.util===u)).join('')}</div></div>`}
