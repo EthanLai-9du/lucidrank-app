@@ -44,7 +44,7 @@ function renderToday(){
     <div class="col">
       <div class="card ci-card${rec?' done':''}">
         ${rec?`<div class="row between"><h2>${t('today.ciDone')} <span class="ok-dot">✓</span></h2><button class="btn ghost sm" data-act="checkin">${t('today.ciRedo')}</button></div>${rec.healthLog&&window.LRHealth&&LRHealth.valid(rec.healthLog)?LRHealth.feedback(rec.healthLog,D(),today):ciChips(rec.a)}`
-             :`<h2>${t('today.ciTodo')}</h2><p class="muted">${t('today.ciTodoP')}</p><div class="ci-cta"><button class="btn primary" data-act="checkin">${t('today.ciGo')}</button><span class="grow"></span><button class="link-btn" data-act="checkinHere">${t('today.here')}</button></div>`}
+             :`<h2>${t('today.ciTodo')}</h2><div class="ci-cta"><button class="btn primary" data-act="checkin">${t('today.ciGo')}</button><span class="grow"></span><button class="link-btn" data-act="checkinHere">${t('today.here')}</button></div>`}
       </div>
       <div class="card">
         <h2>${t('today.matches')}</h2>
@@ -179,7 +179,7 @@ function renderMatches(){
 function renderInsights(){
   const el=$('#v-insights');
   const g=insGame||S.mainGame(D()), ins=S.insights(D(),g,null,context), m=ins.metric;
-  const head=`<header class="vh"><div><h1>${t('ins.h')}</h1><p class="lead">${t('ins.lead')}</p></div>
+  const head=`<header class="vh"><div><h1>${t('ins.h')}</h1></div>
     <div class="row gap"><div class="seg">${['val','cs2'].map(x=>`<button data-ig="${x}" aria-pressed="${g===x}">${gameName(x)}</button>`).join('')}</div>
     ${D().sampleOn?`<button class="btn ghost sm" data-act="sampleClear">${t('ins.sampleClear')}</button>`:`<button class="btn ghost sm" data-act="sample">${t('ins.sampleBtn')}</button>`}</div></header>
     ${D().sampleOn?`<p class="banner">${t('ins.sampleOn',{n:Object.values(D().checkins).filter(c=>c.sample).length})}</p>`:''}`;
@@ -228,7 +228,7 @@ function renderWeek(){
   let lastHTML=`<p class="muted">${t('w.lastNone')}</p>`;
   if(w.last){ const le=w.lastEval, res=le.x>=le.n?'w.lastHit':le.x===le.n-1?'w.lastClose':'w.lastMiss';
     lastHTML=`<div class="row gap">${ring(le.x,le.n,56)}<div><p class="goal-t sm">${S.goalText(w.last)}</p><p class="res-${res.slice(6).toLowerCase()}">${t(res)}</p></div></div>${weekDots(le)}`; }
-  el.innerHTML=`<header class="vh"><div><h1>${t('w.h')}</h1><p class="lead">${t('w.lead')}</p></div>${sampleTag()}</header>
+  el.innerHTML=`<header class="vh"><div><h1>${t('w.h')}</h1></div>${sampleTag()}</header>
   <div class="grid2 wk">
     <div class="col">
       <div class="card goal-card">
