@@ -478,20 +478,19 @@ function _open(form){
 
   w.innerHTML=`<div class="modal-card ocr-dialog" role="dialog" aria-modal="true" aria-label="${t('ocr.h')}">
     <h2>${t('ocr.h')}</h2>
-    <p class="muted sm">${t('ocr.note')}</p>
     <div class="row gap"><button class="btn ghost" data-ocr-pick>${t('ocr.choose')}</button><button class="btn ghost" data-ocr-read disabled>${t('ocr.read')}</button></div>
     <div data-ocr-image></div>
     <p class="muted xs" data-ocr-status aria-live="polite"></p>
     <label class="lbl">${t('ocr.text')}<textarea data-ocr-text rows="4" readonly></textarea></label>
     <div class="fgrid">
-      <label class="lbl">${t('m.res')}<select data-ocr-value="result"><option value="">—</option><option value="W">${t('m.W')}</option><option value="L">${t('m.L')}</option><option value="D">${t('m.D')}</option></select><span class="muted xs" data-ocr-hint="result" hidden>${t('ocr.verify')}</span></label>
-      <label class="lbl">K<input data-ocr-value="k" type="number" min="0" max="99" step="1"><span class="muted xs" data-ocr-hint="k" hidden>${t('ocr.verify')}</span></label>
-      <label class="lbl">D<input data-ocr-value="d" type="number" min="0" max="99" step="1"><span class="muted xs" data-ocr-hint="d" hidden>${t('ocr.verify')}</span></label>
-      <label class="lbl">A<input data-ocr-value="a" type="number" min="0" max="99" step="1"><span class="muted xs" data-ocr-hint="a" hidden>${t('ocr.verify')}</span></label>
-      <label class="lbl">${esc(scoreLabel)}<input data-ocr-value="score" type="number" min="0" step=".1" max="${game==='val'&&form.elements.metricType?.value==='performanceScore'?500:999}"><span class="muted xs" data-ocr-hint="score" hidden>${t('ocr.verify')}</span></label>
-      <label class="lbl">${t('m.map')}<select data-ocr-value="map"><option value="">—</option>${mapOpts}</select><span class="muted xs" data-ocr-hint="map" hidden>${t('ocr.verify')}</span></label>
-      ${game==='val'?`<label class="lbl">${t('m.agent')}<select data-ocr-value="agent"><option value="">—</option>${agentOpts}</select><span class="muted xs" data-ocr-hint="agent" hidden>${t('ocr.verify')}</span></label>`:''}
-      <label class="lbl">${t('m.hs')}<input data-ocr-value="hs" type="number" min="0" max="100" step=".1"><span class="muted xs" data-ocr-hint="hs" hidden>${t('ocr.verify')}</span></label>
+      <label class="lbl">${t('m.res')}<select data-ocr-value="result"><option value="">—</option><option value="W">${t('m.W')}</option><option value="L">${t('m.L')}</option><option value="D">${t('m.D')}</option></select></label>
+      <label class="lbl">K<input data-ocr-value="k" type="number" min="0" max="99" step="1"></label>
+      <label class="lbl">D<input data-ocr-value="d" type="number" min="0" max="99" step="1"></label>
+      <label class="lbl">A<input data-ocr-value="a" type="number" min="0" max="99" step="1"></label>
+      <label class="lbl">${esc(scoreLabel)}<input data-ocr-value="score" type="number" min="0" step=".1" max="${game==='val'&&form.elements.metricType?.value==='performanceScore'?500:999}"></label>
+      <label class="lbl">${t('m.map')}<select data-ocr-value="map"><option value="">—</option>${mapOpts}</select></label>
+      ${game==='val'?`<label class="lbl">${t('m.agent')}<select data-ocr-value="agent"><option value="">—</option>${agentOpts}</select></label>`:''}
+      <label class="lbl">${t('m.hs')}<input data-ocr-value="hs" type="number" min="0" max="100" step=".1"></label>
     </div>
     <div class="row gap"><button class="btn primary" data-ocr-apply>${t('ocr.apply')}</button><button class="btn ghost" data-ocr-close>${t('cancel')}</button></div>
   </div>`;
@@ -539,26 +538,11 @@ function _open(form){
     return crop;
   }
 
-  function setHints(values){
-    w.querySelectorAll('[data-ocr-hint]').forEach(el=>{el.hidden=true;});
-    for(const k of Object.keys(values)){
-      const hint=w.querySelector(`[data-ocr-hint="${k}"]`);
-      if(hint) hint.hidden=false;
-    }
-  }
-
   function fillValues(values){
     for(const [k,v] of Object.entries(values)){
       const el=w.querySelector(`[data-ocr-value="${k}"]`);
-      if(!el) continue;
-      el.value=v;
-      // Mark map/agent for review when present (often less stable)
-      if(k==='map'||k==='agent'){
-        const hint=w.querySelector(`[data-ocr-hint="${k}"]`);
-        if(hint) hint.hidden=false;
-      }
+      if(el) el.value=v;
     }
-    setHints(values);
   }
 
   async function runOcr(){
@@ -594,7 +578,6 @@ function _open(form){
         }
       }
       w.querySelectorAll('[data-ocr-value]').forEach(x=>{if(x.tagName==='SELECT')x.value='';else x.value='';});
-      w.querySelectorAll('[data-ocr-hint]').forEach(el=>{el.hidden=true;});
       fillValues(values);
       const keys=filledKeyCount(values);
       if(keys===0) status.textContent=t('ocr.partial');
@@ -626,7 +609,6 @@ function _open(form){
         read.disabled=false;
         w.querySelector('[data-ocr-text]').value='';
         w.querySelectorAll('[data-ocr-value]').forEach(x=>{if(x.tagName==='SELECT')x.value='';else x.value='';});
-        w.querySelectorAll('[data-ocr-hint]').forEach(el=>{el.hidden=true;});
         status.textContent=t('ocr.busy');
         runOcr();
       }catch(e){status.textContent=t('ocr.partial');}

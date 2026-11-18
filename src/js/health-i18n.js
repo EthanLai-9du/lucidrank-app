@@ -256,11 +256,6 @@ Object.assign(I18N,{
       "Fatigued"
     ]
   },
-  "hc.estimate": {
-    "sc": "所有数字可以估计，留空不计为 0。早上可先记身体状态，晚上修改训练完成量；新记录不再用“三餐正常”等宽泛问题代替事实。",
-    "tc": "所有數字可以估計，留空不計為 0。早上可先記身體狀態，晚上修改訓練完成量；新記錄不再用「三餐正常」等籠統問題代替事實。",
-    "en": "Estimates are welcome; blanks are not zero. Record health in the morning and edit completed practice later."
-  },
   "hc.error": {
     "sc": "请输入有效范围内的数字。",
     "tc": "請輸入有效範圍內的數字。",
@@ -268,19 +263,19 @@ Object.assign(I18N,{
   }
 });
 
-Object.assign(I18N,{"today.ciTodoP": {"sc": "记录实际睡眠、当前不适和计划完成量。不确定的项可以留空。", "tc": "記錄實際睡眠、目前不適和計劃完成量。不確定的項目可以留空。", "en": "Record actual sleep, current symptoms and plan completion. Leave uncertain fields blank."}, "notif.b": {"sc": "记录身体状态与个人计划，未知项可以留空。", "tc": "記錄身體狀態與個人計劃，未知項目可以留空。", "en": "Record health and your plan; uncertain fields can stay blank."}, "hc.selfPlan": {"sc": "“事前定好”是你的自述，应用无法验证；修改已保存目标后，不再计为原目标达标。", "tc": "「事前定好」是你的自述，應用程式無法驗證；修改已儲存目標後，不再計為原目標達標。", "en": "Beforehand planning is self-reported and cannot be verified. Changing a saved target removes its beforehand credit."}});
+Object.assign(I18N,{"notif.b": {"sc": "记录身体状态与个人计划，未知项可以留空。", "tc": "記錄身體狀態與個人計劃，未知項目可以留空。", "en": "Record health and your plan; uncertain fields can stay blank."}, "hc.selfPlan": {"sc": "“事前定好”是你的自述，应用无法验证；修改已保存目标后，不再计为原目标达标。", "tc": "「事前定好」是你的自述，應用程式無法驗證；修改已儲存目標後，不再計為原目標達標。", "en": "Beforehand planning is self-reported and cannot be verified. Changing a saved target removes its beforehand credit."}});
 
-Object.assign(I18N,{"hc.diet": {"sc": "饮食：填写时往前 24 小时", "tc": "飲食：填寫時往前 24 小時", "en": "Diet: 24 hours before this entry"}, "hc.dietNote": {"sc": "按正餐或一次明显加餐计次。同一餐可以同时偏油和偏咸。这是食物特征自述，不等于油脂、钠的实际摄入量。", "tc": "按正餐或一次明顯加餐計次。同一餐可以同時偏油和偏鹹。這是食物特徵自述，不等於油脂、鈉的實際攝取量。", "en": "Count meals or substantial snacks. One meal may be both oily and salty. These are self-reported food characteristics, not measured fat or sodium intake."}, "hc.meals": {"sc": "共吃了几餐 / 次明显加餐？", "tc": "共吃了幾餐 / 次明顯加餐？", "en": "Total meals / substantial snacks"}, "hc.oily": {"sc": "其中几餐有油炸或明显油腻食物？", "tc": "其中幾餐有油炸或明顯油膩食物？", "en": "Meals with fried or visibly oily food"}, "hc.salty": {"sc": "其中几餐有偏咸食物？", "tc": "其中幾餐有偏鹹食物？", "en": "Meals with salty food"}, "hc.examples": {"sc": "油腻示例：炸鸡、薯条、明显油多的菜。偏咸示例：腌制品、咸味加工肉、重口味汤汁或蘸料；尝不出来就留空。", "tc": "油膩例子：炸雞、薯條、明顯多油的菜。偏鹹例子：醃製食品、鹹味加工肉、重口味湯汁或蘸料；判斷不到就留空。", "en": "Examples: fried chicken, fries or visibly oily dishes; pickles, salty processed meat, strongly seasoned broth or sauces. Leave uncertain counts blank."}, "hc.fullness": {"sc": "最近一餐吃完后的饱腹感觉", "tc": "最近一餐吃完後的飽腹感覺", "en": "Fullness after the most recent meal"}, "hc.fullnessOptions": {"sc": ["未记录", "仍饿", "适量，舒适", "很饱但不难受", "撑得不舒服"], "tc": ["未記錄", "仍餓", "適量，舒服", "很飽但不難受", "飽得不舒服"], "en": ["Unrecorded", "Still hungry", "Comfortably satisfied", "Very full, comfortable", "Uncomfortably full"]}, "hc.dietCounts": {"sc": "过去 24 小时：总餐次 {meals}；油炸 / 油腻 {oily} 次；偏咸 {salty} 次。", "tc": "過去 24 小時：總餐次 {meals}；油炸 / 油膩 {oily} 次；偏鹹 {salty} 次。", "en": "Previous 24 hours: {meals} meals; {oily} fried/oily meals; {salty} salty meals."}, "hc.dietFeedback": {"sc": "油腻和偏咸分别记录，不合成“饮食健康分”。一次饮食不能判断是否自律，也不能据此认定影响了这一局；先观察多天记录。", "tc": "油膩和偏鹹分別記錄，不合成「飲食健康分」。一次飲食不能判斷是否自律，也不能據此認定影響了這一局；先觀察多天記錄。", "en": "Oily and salty food are recorded separately, without a diet health score. One meal does not establish discipline or explain a match; observe multiple days first."}, "hc.dietError": {"sc": "油腻或偏咸的餐次不能超过总餐次。", "tc": "油膩或偏鹹的餐次不能超過總餐次。", "en": "Oily or salty meal counts cannot exceed the total meal count."}});
+Object.assign(I18N,{"hc.diet": {"sc": "饮食：填写时往前 24 小时", "tc": "飲食：填寫時往前 24 小時", "en": "Diet: 24 hours before this entry"}, "hc.meals": {"sc": "共吃了几餐 / 次明显加餐？", "tc": "共吃了幾餐 / 次明顯加餐？", "en": "Total meals / substantial snacks"}, "hc.oily": {"sc": "其中几餐有油炸或明显油腻食物？", "tc": "其中幾餐有油炸或明顯油膩食物？", "en": "Meals with fried or visibly oily food"}, "hc.salty": {"sc": "其中几餐有偏咸食物？", "tc": "其中幾餐有偏鹹食物？", "en": "Meals with salty food"}, "hc.fullness": {"sc": "最近一餐吃完后的饱腹感觉", "tc": "最近一餐吃完後的飽腹感覺", "en": "Fullness after the most recent meal"}, "hc.fullnessOptions": {"sc": ["未记录", "仍饿", "适量，舒适", "很饱但不难受", "撑得不舒服"], "tc": ["未記錄", "仍餓", "適量，舒服", "很飽但不難受", "飽得不舒服"], "en": ["Unrecorded", "Still hungry", "Comfortably satisfied", "Very full, comfortable", "Uncomfortably full"]}, "hc.dietCounts": {"sc": "过去 24 小时：总餐次 {meals}；油炸 / 油腻 {oily} 次；偏咸 {salty} 次。", "tc": "過去 24 小時：總餐次 {meals}；油炸 / 油膩 {oily} 次；偏鹹 {salty} 次。", "en": "Previous 24 hours: {meals} meals; {oily} fried/oily meals; {salty} salty meals."}, "hc.dietFeedback": {"sc": "油腻和偏咸分别记录，不合成“饮食健康分”。一次饮食不能判断是否自律，也不能据此认定影响了这一局；先观察多天记录。", "tc": "油膩和偏鹹分別記錄，不合成「飲食健康分」。一次飲食不能判斷是否自律，也不能據此認定影響了這一局；先觀察多天記錄。", "en": "Oily and salty food are recorded separately, without a diet health score. One meal does not establish discipline or explain a match; observe multiple days first."}, "hc.dietError": {"sc": "油腻或偏咸的餐次不能超过总餐次。", "tc": "油膩或偏鹹的餐次不能超過總餐次。", "en": "Oily or salty meal counts cannot exceed the total meal count."}});
 
-Object.assign(I18N,{"hc.title":{sc:"今日状态",tc:"今日狀態",en:"Today’s check-in"},"hc.estimate":{sc:"按实际情况填写，可估计；不确定就留空。今天的记录可以随时修改。",tc:"按實際情況填寫，可估計；不確定就留空。今天的記錄可以隨時修改。",en:"Estimates are welcome. Leave unknowns blank. You can update today’s record later."}});
+Object.assign(I18N,{"hc.title":{sc:"今日状态",tc:"今日狀態",en:"Today’s check-in"}});
 
-Object.assign(I18N,{"hc.recovery": {"sc": "醒来时恢复感", "tc": "醒來時恢復感", "en": "Recovery on waking"}, "hc.recoveryOptions": {"sc": ["未填写", "很差", "较差", "一般", "较好", "很好"], "tc": ["未填寫", "很差", "較差", "一般", "較好", "很好"], "en": ["Not recorded", "Very poor", "Poor", "Neutral", "Good", "Very good"]}, "hc.caffeine": {"sc": "过去 24 小时喝了什么含咖啡因饮料", "tc": "過去 24 小時喝了甚麼含咖啡因飲品", "en": "Caffeinated drinks in the past 24 hours"}, "hc.caffeineOptions": {"sc": ["未填写", "没有喝", "咖啡", "茶", "能量饮料", "可乐", "混合 / 其他"], "tc": ["未填寫", "沒有喝", "咖啡", "茶", "能量飲品", "可樂", "混合 / 其他"], "en": ["Not recorded", "None", "Coffee", "Tea", "Energy drink", "Cola", "Mixed / other"]}, "hc.caffeineMl": {"sc": "总饮用量（毫升，估计即可）", "tc": "總飲用量（毫升，可估計）", "en": "Total drink volume (ml, estimate)"}, "hc.caffeineTime": {"sc": "最后一次饮用时间", "tc": "最後一次飲用時間", "en": "Last drink time"}, "hc.caffeineNote": {"sc": "记录饮料量，不推算咖啡因剂量；多种饮料选“混合 / 其他”。", "tc": "記錄飲品量，不推算咖啡因劑量；多種飲品選「混合 / 其他」。", "en": "Record beverage volume, not an estimated caffeine dose. Choose mixed for multiple drinks."}});
+Object.assign(I18N,{"hc.recovery": {"sc": "醒来时恢复感", "tc": "醒來時恢復感", "en": "Recovery on waking"}, "hc.recoveryOptions": {"sc": ["未填写", "很差", "较差", "一般", "较好", "很好"], "tc": ["未填寫", "很差", "較差", "一般", "較好", "很好"], "en": ["Not recorded", "Very poor", "Poor", "Neutral", "Good", "Very good"]}, "hc.caffeine": {"sc": "过去 24 小时喝了什么含咖啡因饮料", "tc": "過去 24 小時喝了甚麼含咖啡因飲品", "en": "Caffeinated drinks in the past 24 hours"}, "hc.caffeineOptions": {"sc": ["未填写", "没有喝", "咖啡", "茶", "能量饮料", "可乐", "混合 / 其他"], "tc": ["未填寫", "沒有喝", "咖啡", "茶", "能量飲品", "可樂", "混合 / 其他"], "en": ["Not recorded", "None", "Coffee", "Tea", "Energy drink", "Cola", "Mixed / other"]}, "hc.caffeineMl": {"sc": "总饮用量（毫升，估计即可）", "tc": "總飲用量（毫升，可估計）", "en": "Total drink volume (ml, estimate)"}, "hc.caffeineTime": {"sc": "最后一次饮用时间", "tc": "最後一次飲用時間", "en": "Last drink time"}});
 
 Object.assign(I18N,{
   "status_disclaimer":{
-    "sc":"自评记录，不是体检；不填=未知",
-    "tc":"自評記錄，不是體檢；不填=未知",
-    "en":"Self-reported, not a checkup; blank = unknown"
+    "sc":"自评，不是体检。",
+    "tc":"自評，不是體檢。",
+    "en":"Self-reported, not a checkup."
   },
   "status_sleep":{
     "sc":"昨晚睡眠",
@@ -321,15 +316,5 @@ Object.assign(I18N,{
     "sc":["头痛","咳嗽咽痛","发热感","胃肠不适","肌肉疼痛","其他"],
     "tc":["頭痛","咳嗽咽痛","發熱感","腸胃不適","肌肉疼痛","其他"],
     "en":["Headache","Cough / sore throat","Feverish","Digestive","Muscle pain","Other"]
-  },
-  "hc.estimate":{
-    "sc":"开打前点几下即可；不确定就跳过。今天的记录可以随时修改。",
-    "tc":"開打前點幾下即可；不確定就跳過。今天的記錄可以隨時修改。",
-    "en":"Tap a few chips before you queue. Skip unknowns. You can edit today’s record later."
-  },
-  "today.ciTodoP":{
-    "sc":"点选昨晚睡眠、现在清醒和身体不适；不确定就跳过。",
-    "tc":"點選昨晚睡眠、現在清醒和身體不適；不確定就跳過。",
-    "en":"Tap sleep, alertness, and discomfort. Skip anything uncertain."
   }
 });

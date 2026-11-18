@@ -51,13 +51,11 @@ const I18N = {
   'fb.note': {sc:'弹窗没打开，先在这里继续。', tc:'彈出視窗開唔到，先喺呢度繼續。', en:'The pop-up didn’t open, so it’s here instead.'},
   'fb.back': {sc:'← 返回', tc:'← 返回', en:'← Back'},
   'ci.already': {sc:'今天已经签过了', tc:'今天已經簽過了', en:'Already checked in today'},
-  'ci.alreadyP': {sc:'想改的话可以重签一次，会覆盖今天的记录。', tc:'想改的話可以重簽一次，會覆蓋今天的記錄。', en:'Redo it if something changed. It replaces today’s entry.'},
   'ci.redo': {sc:'重新签到', tc:'重新簽到', en:'Redo check-in'},
 
   /* ---- today ---- */
   'today.h': {sc:'今天', tc:'今天', en:'Today'},
   'today.ciTodo': {sc:'还没签到', tc:'還未簽到', en:'Not checked in yet'},
-  'today.ciTodoP': {sc:'开打前点 8 下。不用想太久，凭感觉。', tc:'開打前點 8 下。不用想太久，憑感覺。', en:'Eight taps before you play. Go with your gut.'},
   'today.ciGo': {sc:'开始签到', tc:'開始簽到', en:'Check in'},
   'today.here': {sc:'在这个窗口签', tc:'在這個視窗簽', en:'Do it here'},
   'today.ciDone': {sc:'今天签好了', tc:'今天簽好了', en:'Checked in'},
@@ -83,7 +81,6 @@ const I18N = {
   'm.shot': {sc:'附截图', tc:'附截圖', en:'Attach screenshot'},
   'm.shotOn': {sc:'已附：{f}', tc:'已附：{f}', en:'Attached: {f}'},
   'm.ocr': {sc:'自动识别 · 即将推出', tc:'自動識別 · 即將推出', en:'Auto-read · coming soon'},
-  'm.ocrP': {sc:'v0.1 只保存截图路径，数字先手动填。', tc:'v0.1 只儲存截圖路徑，數字先手動填。', en:'v0.1 only keeps the file path. Type the numbers in for now.'},
   'm.save': {sc:'记下', tc:'記低', en:'Save game'},
   'm.saved': {sc:'记好了', tc:'記好了', en:'Saved'},
   'm.need': {sc:'至少选个输赢', tc:'最少揀輸定贏', en:'Pick win or loss at least'},
@@ -95,7 +92,6 @@ const I18N = {
 
   /* ---- insights ---- */
   'ins.h': {sc:'洞察', tc:'洞察', en:'Insights'},
-  'ins.lead': {sc:'只拿你自己的签到和战绩对比，不跟别人比。', tc:'只用你自己的簽到和戰績對比，不跟別人比。', en:'Your check-ins vs your own games. Nobody else’s.'},
   'ins.need': {sc:'还需要 <b>{n}</b> 天', tc:'還需要 <b>{n}</b> 天', en:'<b>{n}</b> more days to go'},
   'ins.need.one': {en:'<b>1</b> more day to go'},
   'ins.needP': {sc:'有签到、也有对局的日子才算。攒够 {min} 天就能看出点东西。现在 {have} 天。', tc:'有簽到、也有對局的日子才計。儲夠 {min} 天就看得出端倪。現在 {have} 天。', en:'A day counts when it has a check-in and at least one game. {min} days and patterns start to show. You have {have}.'},
@@ -120,7 +116,6 @@ const I18N = {
 
   /* ---- weekly ---- */
   'w.h': {sc:'本周', tc:'本週', en:'This week'},
-  'w.lead': {sc:'每周只定一个小目标。从你现在的习惯出发，不求一步到位。', tc:'每週只定一個小目標。由你現在的習慣出發，不求一步到位。', en:'One small goal a week, starting from where you are now.'},
   'w.goal': {sc:'本周目标', tc:'本週目標', en:'This week’s goal'},
   'w.propose': {sc:'建议这周试试', tc:'建議這週試試', en:'Try this week'},
   'w.lock': {sc:'就这个', tc:'就這個', en:'Lock it in'},
@@ -159,11 +154,9 @@ const I18N = {
   's.lang': {sc:'语言', tc:'語言', en:'Language'},
   's.auto': {sc:'跟随系统', tc:'跟隨系統', en:'System'},
   's.startup': {sc:'开机自动启动', tc:'開機自動啟動', en:'Launch at login'},
-  's.startupP': {sc:'默认关闭。打开后会在托盘里静静待着，检测到游戏才提醒签到。', tc:'預設關閉。開啟後會靜靜待在系統匣，偵測到遊戲先提醒簽到。', en:'Off by default. When on, it waits quietly in the tray and only nudges you when a game starts.'},
   's.watch': {sc:'检测哪些游戏', tc:'偵測哪些遊戲', en:'Games to watch'},
   's.watchP': {sc:'游戏启动时，如果今天还没签到，会弹一次签到小窗（每天最多一次）。', tc:'遊戲啟動時，如果今天還未簽到，會彈出一次簽到小視窗（每天最多一次）。', en:'When a game starts and you haven’t checked in, a small check-in window pops up once (max once a day).'},
   's.data': {sc:'数据', tc:'數據', en:'Data'},
-  's.dataP': {sc:'全部数据只存在这台电脑上。没有账号，不上传任何东西。', tc:'全部數據只存在這部電腦。沒有帳號，不會上傳任何東西。', en:'Everything stays on this PC. No account, nothing gets uploaded.'},
   's.loc': {sc:'存放位置', tc:'存放位置', en:'Location'},
   's.export': {sc:'导出 JSON', tc:'匯出 JSON', en:'Export JSON'},
   's.exported': {sc:'已导出到 {p}', tc:'已匯出到 {p}', en:'Exported to {p}'},
@@ -212,7 +205,6 @@ const I18N = {
   'lu.fav': {sc:'收藏', tc:'收藏', en:'Favorite'},
   'lu.learned': {sc:'学会了', tc:'學會了', en:'Learned'},
   'lu.none': {sc:'这个组合还没有示例。换个地图或场景看看。', tc:'這個組合還沒有示例。換個地圖或場景看看。', en:'No examples for this combo. Try another map or scenario.'},
-  'lu.pickMap': {sc:'地图没法自动识别（不读游戏数据），自己选一下，下次会记住。', tc:'地圖無法自動識別（不讀遊戲數據），自己揀一下，下次會記住。', en:'Map can’t be auto-detected (we don’t read game data). Pick it here; we’ll remember.'},
   'lu.steps': {sc:'三步', tc:'三步', en:'3 steps'},
   'lu.stand': {sc:'站位', tc:'站位', en:'Stand'},
   'lu.aim': {sc:'瞄点', tc:'瞄點', en:'Aim'},

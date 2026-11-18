@@ -123,7 +123,7 @@ function boot(host,opts={}){
   }
   function already(rec){
     done=true; updProg(); skipBtn.hidden=true; prog.forEach(p=>p.classList.add('done'));
-    const d=doneCard(tag('ci.already',null,'h3'),tag('ci.alreadyP',null,'p','class="sub"'),rec.a,
+    const d=doneCard(tag('ci.already',null,'h3'),'',rec.a,
       `<div class="ci-closebar center">${tag('ci.redo',null,'button','class="btn ghost sm" id="ciRedo"')}${tag(opts.inline?'ci.back2':'close',null,'button','class="btn primary sm" id="ciClose"')}</div>`);
     $('#ciRedo',d).addEventListener('click',()=>{ done=false; skipBtn.hidden=false; ans=[]; tStart=0; setTimer('0.0'); show(0,-1); });
     $('#ciClose',d).addEventListener('click',end);

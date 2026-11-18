@@ -2,8 +2,6 @@
    Loaded after the shared js/i18n.js and before core.js. sc = 简体 · tc = 繁體 (HK) · en. */
 Object.assign(I18N,{
   /* overrides: desktop wording that doesn't fit a phone / tablet */
-  'm.ocrP': {sc:'截图保留压缩小图；登录后随记录同步。数值请核对后填写。', tc:'截圖保留壓縮小圖；登入後隨記錄同步。數值請核對後填寫。', en:'A small screenshot copy is kept and synced when signed in. Review numbers before saving.'},
-  's.dataP': {sc:'未登录时保存在本机；登录后可同步到云端。请保存账号恢复码，并定期导出备份。', tc:'未登入時儲存在本機；登入後可同步到雲端。請保存帳戶復原碼，並定期匯出備份。', en:'Guest data stays on this device. Sign in for cloud sync. Save your recovery code and export regular backups.'},
   's.exported': {sc:'已导出 {p}', tc:'已匯出 {p}', en:'Exported {p}'},
 
   /* bottom tab bar (short labels) */
